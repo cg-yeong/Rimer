@@ -24,7 +24,7 @@ extension Module {
     }
     
     public var path: ProjectDescription.Path {
-        return .relativeToRoot("Projects/" + self.name)
+        return .relativeToRoot("Rimer/" + self.name)
     }
     
     public var project: TargetDependency {

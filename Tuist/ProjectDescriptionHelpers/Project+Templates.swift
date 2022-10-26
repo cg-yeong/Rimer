@@ -101,5 +101,6 @@ public extension TargetDependency {
     static let then: TargetDependency       = .external(name: "Then")
     static let snapKit: TargetDependency    = .external(name: "SnapKit")
     static let rxSwift: TargetDependency    = .external(name: "RxSwift")
-    
+    static let rxCocoa: TargetDependency    = .external(name: "RxCocoa")
+    static let alamofire: TargetDependency  = .external(name: "Alamofire")
 }
