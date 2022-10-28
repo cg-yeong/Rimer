@@ -22,7 +22,7 @@ public class MainCoordinator: Coordinator {
     private var nav = {
         let nav = UINavigationController()
         nav.setToolbarHidden(true, animated: false)
-        nav.setNavigationBarHidden(true, animated: false)
+        nav.setNavigationBarHidden(false, animated: false)
         return nav
     }
     public var childCoordinators: [Coordinator] = []

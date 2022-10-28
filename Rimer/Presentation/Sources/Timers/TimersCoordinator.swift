@@ -13,9 +13,6 @@ public protocol TimersCoordinatorDependencies {
     func makeTimersViewController() -> TimersViewController
 }
 
-protocol TimersDelegate: AnyObject {
-    func tapTimerBtn()
-}
 
 public class TimersCoordinator: Coordinator {
     public var childCoordinators: [Coordinator] = []
@@ -30,22 +27,15 @@ public class TimersCoordinator: Coordinator {
     
     public func start() {
         let timerVC = dpendencies.makeTimersViewController()
-        
-        timerVC.view.backgroundColor = .systemBackground
+        timerVC.view.backgroundColor = .gray
         timerVC.coordi = self
+        nav.navigationBar.isHidden = false
+        nav.navigationItem.title = "라이머"
         self.nav.pushViewController(timerVC, animated: false)
     }
     
     deinit {
         print(#file)
     }
-    
-}
-
-extension TimersCoordinator: TimersDelegate {
-    func tapTimerBtn() {
-        
-    }
-    
     
 }

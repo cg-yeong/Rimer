@@ -12,46 +12,42 @@ import Util
 import Then
 import SnapKit
 import Domain
+import SwiftyJSON
 
 public class TimersViewController: UIViewController {
     
-    var coordi: TimersDelegate?
+    var coordi: TimersCoordinator?
     
     private var viewModel: TimersViewModel!
-    let dBag = DisposeBag()
     
-    private var gridFlowLayout = GridCollecitonViewFlowLayout().then {
-        $0.cellSpacing = 8
-        $0.numberOfColumns = 1
-    }
-    
-    private var rimersCollectionView = UICollectionView(frame: .zero, collectionViewLayout: GridCollecitonViewFlowLayout(col: 2, spacing: 8)).then {
+    private var gridFlowLayout = GridCollecitonViewFlowLayout()
+    private var rimersCollectionView = UICollectionView(frame: .zero, collectionViewLayout: GridCollecitonViewFlowLayout()).then {
         $0.isScrollEnabled = true
-        $0.contentInset = .init(top: 4, left: 8, bottom: 4, right: 8)
         $0.clipsToBounds = true
         $0.register(RimerCell.self, forCellWithReuseIdentifier: RimerCell.id)
+//        $0.register(<#T##viewClass: AnyClass?##AnyClass?#>, forSupplementaryViewOfKind: <#T##String#>, withReuseIdentifier: <#T##String#>)
+        $0.isDirectionalLockEnabled = true
     }
-    
     enum Section: CaseIterable {
         case main
     }
-    
     var dataSource: UICollectionViewDiffableDataSource<Section, Rimer>!
+    var rimerList: [Rimer] = []
     
+    let dBag = DisposeBag()
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         attachSubViews()
         setConstraint()
         
-        viewModel.viewDidLoad { rimers in
-            // datasource reload
-            self.dataSource = UICollectionViewDiffableDataSource(collectionView: self.rimersCollectionView) { collectionView, indexPath, rimer -> UICollectionViewCell? in
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RimerCell.id, for: indexPath) as? RimerCell else { preconditionFailure() }
-//                cell
-                return cell
-            }
+        viewModel.viewDidLoad() { rimerList in
+            self.rimerList = rimerList
         }
+        
+        setUpDataSource()
+        updateDiffableSnapShot()
+        setUpLayout()
         
         bind()
     }
@@ -61,9 +57,9 @@ public class TimersViewController: UIViewController {
     }
     
     func setConstraint() {
+        
         rimersCollectionView.snp.remakeConstraints {
-            $0.leading.trailing.bottom.equalToSuperview()
-            $0.top.equalToSuperview().offset(120)
+            $0.leading.trailing.bottom.top.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
@@ -79,21 +75,46 @@ public class TimersViewController: UIViewController {
     }
 }
 
-extension TimersViewController: UICollectionViewDelegateFlowLayout {
+// MARK: CollectionView Part
+extension TimersViewController {
     
+    func setUpLayout() {
+        rimersCollectionView.collectionViewLayout = gridFlowLayout.createGridLayout()
+    }
     
+    func setUpDataSource() {
+        self.dataSource = UICollectionViewDiffableDataSource(collectionView: self.rimersCollectionView) { collectionView, indexPath, rimer -> UICollectionViewCell? in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RimerCell.id, for: indexPath) as? RimerCell else { preconditionFailure() }
+            var rimerJSON = JSON()
+            rimerJSON["id"] = JSON(rimer.id.uuidString)
+            rimerJSON["name"] = JSON(rimer.name)
+            rimerJSON["totalTime"] = JSON(rimer.totalTime)
+            rimerJSON["thumbnail_desc"] = JSON(rimer.thumbnail_desc)
+            
+            cell.configure(data: rimerJSON)
+            return cell
+        }
+//        dataSource.supplementaryViewProvider = { collectionView, kind, indexPath -> UICollectionReusableView? in }
+    }
     
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        guard let flowLayout = collectionViewLayout as? GridCollecitonViewFlowLayout,
-              flowLayout.numberOfColumns > 0
-        else { fatalError() }
-        
-        let widthOfCells = collectionView.bounds.width - (collectionView.contentInset.left + collectionView.contentInset.right)
-        let widthOfSpacing = CGFloat(flowLayout.numberOfColumns - 1) * flowLayout.cellSpacing
-        
-        let width = (widthOfCells - widthOfSpacing) / CGFloat(flowLayout.numberOfColumns)
-        return CGSize(width: width, height: width)
+    func updateDiffableSnapShot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Rimer>()
+        snapshot.appendSections([.main])
+//        snapshot.appendItems(rimerList)
+        snapshot.appendItems([
+            Rimer(name: "라면", totalTime: 180.0, thumbnail_desc: "trash"),
+            Rimer(name: "라면", totalTime: 180.0, thumbnail_desc: "folder"),
+            Rimer(name: "라면", totalTime: 180.0, thumbnail_desc: "paperplane"),
+            Rimer(name: "라면", totalTime: 180.0, thumbnail_desc: "book"),
+            Rimer(name: "라면", totalTime: 180.0, thumbnail_desc: "tag"),
+            Rimer(name: "라면", totalTime: 180.0, thumbnail_desc: "pin"),
+            Rimer(name: "라면", totalTime: 180.0, thumbnail_desc: "lightbulb"),
+            Rimer(name: "라면", totalTime: 180.0, thumbnail_desc: "gift"),
+            Rimer(name: "라면", totalTime: 180.0, thumbnail_desc: "gift")
+        ])
+        self.dataSource.apply(snapshot, animatingDifferences: true)
         
     }
+    
 }
+

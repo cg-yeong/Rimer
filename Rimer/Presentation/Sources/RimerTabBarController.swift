@@ -14,7 +14,6 @@ public class RimerTabBarController: UITabBarController {
         delegate = self
         tabBar.backgroundColor = .systemBackground
         tabBar.unselectedItemTintColor = .label
-        tabBar.tintColor = .blue
     }
 }
 

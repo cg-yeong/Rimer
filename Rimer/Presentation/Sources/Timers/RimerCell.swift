@@ -16,30 +16,36 @@ final class RimerCell: UICollectionViewCell {
     static let id = "RimerCell"
     
     private var imageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFill
+        $0.contentMode = .scaleAspectFit
     }
     
     private var timerLabel = UILabel().then {
         $0.text = "00 : 00"
         $0.textColor = .white
+        $0.font = .systemFont(ofSize: 16, weight: .bold)
     }
     
     private var nameLabel = UILabel().then {
         $0.text = "무슨타이머"
         $0.textColor = .white
+        $0.font = .systemFont(ofSize: 12)
     }
     
     
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         addSubViews()
         setConstraint()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        backgroundColor = [UIColor.green, .blue, .systemPink, .purple, .red, .orange, .yellow].randomElement()
     }
     
     override func prepareForReuse() {
@@ -53,18 +59,18 @@ final class RimerCell: UICollectionViewCell {
     
     func addSubViews() {
         contentView.addSubview(imageView)
-        [timerLabel, nameLabel].forEach(imageView.addSubview(_:))
+        [timerLabel, nameLabel].forEach(imageView.addSubview)
     }
     
     func setConstraint() {
         
         imageView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.size.equalToSuperview().multipliedBy(0.5)
+            $0.center.equalToSuperview()
         }
         
         timerLabel.snp.remakeConstraints {
             $0.center.equalToSuperview()
-            $0.height.equalToSuperview().multipliedBy(0.5)
         }
         
         nameLabel.snp.remakeConstraints {
@@ -75,9 +81,14 @@ final class RimerCell: UICollectionViewCell {
     }
     
     func configure(data: JSON) {
-        timerLabel.text = data["totalTime"].stringValue
+        timerLabel.text = data["totalTime"].intValue.toColonTime
         nameLabel.text = data["name"].stringValue
-        imageView.kf.setImage(with: data["thumbnail_desc"].url)
+        if data["thumbnail_desc"].stringValue.contains("://") {
+            imageView.kf.setImage(with: data["thumbnail_desc"].url)
+        } else {
+            imageView.image = UIImage(systemName: data["thumbnail_desc"].stringValue)
+        }
+        
     }
     
 }

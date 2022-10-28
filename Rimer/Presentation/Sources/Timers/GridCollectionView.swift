@@ -29,6 +29,112 @@ class GridCollecitonViewFlowLayout: UICollectionViewFlowLayout {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func createGridLayout() -> UICollectionViewLayout {
+        
+        let size = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1 / 2),
+                                          heightDimension: .fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: size)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 5,
+                                                     leading: 5,
+                                                     bottom: 5,
+                                                     trailing: 5)
+        
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: .init(widthDimension: .fractionalWidth(1),
+                              heightDimension: .fractionalWidth(1 / 2)),
+            subitem: item,
+            count: 2)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 2.5
+        section.contentInsets = NSDirectionalEdgeInsets(top: 2.5, leading: 0, bottom: 0, trailing: 0)
+        section.orthogonalScrollingBehavior = .none
+        
+//        // header
+//        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+//                                                heightDimension: .absolute(44))
+//        let headerSupplementary = NSCollectionLayoutBoundarySupplementaryItem(
+//            layoutSize: headerSize,
+//            elementKind: UICollectionView.elementKindSectionHeader,
+//            alignment: .top)
+//        section.boundarySupplementaryItems = [headerSupplementary]
+//        if #available(iOS 16.0, *) {
+//            section.supplementaryContentInsetsReference = .none
+//        } else {
+//            section.supplementariesFollowContentInsets = false
+//        }
+//
+//        let sectionBackgroundDecoration = NSCollectionLayoutDecorationItem.background(elementKind: "sectionBackgroundDecorationElementKind")
+        
+        let layout = UICollectionViewCompositionalLayout(section: section)
+//        layout.register(<#T##viewClass: AnyClass?##AnyClass?#>, forDecorationViewOfKind: <#T##String#>)
+        return layout
+    }
+    
+    func createGroupedPhotoLayout() -> UICollectionViewLayout {
+        /// 1. FULL : Full Width Photo
+        /// 2. Main With Pair: 2/3 Width 1 Photo, Vertical 1/3 Width 2 Photo
+        /// 3. Tripet: Horizontal 1/3 Width 3 Photo
+        
+        // 1
+        let fullPhotoSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(2 / 3)
+        )
+        let fullPhotoItem = NSCollectionLayoutItem(layoutSize: fullPhotoSize)
+        fullPhotoItem.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
+        
+        // 2
+        // 2 - 3
+        let mainPhotoSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(2 / 3), heightDimension: .fractionalHeight(1)
+        )
+        let mainPhotoItem = NSCollectionLayoutItem(layoutSize: mainPhotoSize)
+        mainPhotoItem.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
+        
+        // 2 - 2
+        let pairPhotoSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.5)
+        )
+        let pairPhotoItem = NSCollectionLayoutItem(layoutSize: pairPhotoSize)
+        pairPhotoItem.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
+        
+        let trailingGroup = NSCollectionLayoutGroup.vertical(
+            layoutSize: .init(widthDimension: .fractionalWidth(1 / 3),
+                              heightDimension: .fractionalHeight(1)
+                             ),
+            subitem: pairPhotoItem, count: 2)
+        
+        // 2 - 1
+        let mainWithPairGroup = NSCollectionLayoutGroup.horizontal(
+            layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(4 / 9)),
+            subitems: [mainPhotoItem, trailingGroup])
+        
+        // 3
+        let tripetItemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1 / 3), heightDimension: .fractionalHeight(1))
+        let tripetPhotoItem = NSCollectionLayoutItem(layoutSize: tripetItemSize)
+        tripetPhotoItem.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
+        let tripetGroup = NSCollectionLayoutGroup.horizontal(
+            layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(2 / 9)), subitems: [tripetPhotoItem, tripetPhotoItem, tripetPhotoItem])
+        
+        // 4 : 2 Reversed
+        let mainWithPairReversedGroup = NSCollectionLayoutGroup.horizontal(
+            layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(4 / 9)), subitems: [trailingGroup, mainPhotoItem])
+        
+        
+        
+        var group: NSCollectionLayoutGroup
+        group = NSCollectionLayoutGroup.vertical(
+            layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(16 / 9)), subitems: [
+                fullPhotoItem, mainWithPairGroup, tripetGroup, mainWithPairReversedGroup
+            ])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
+    }
 }
 
 class ColumnFlowLayout: UICollectionViewFlowLayout {
