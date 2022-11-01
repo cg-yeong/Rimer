@@ -16,6 +16,8 @@ import SwiftyJSON
 
 public class TimersViewController: UIViewController {
     
+    var addRimerBtn: UIBarButtonItem?
+    
     var coordi: TimersCoordinator?
     
     private var viewModel: TimersViewModel!
@@ -54,6 +56,9 @@ public class TimersViewController: UIViewController {
     
     func attachSubViews() {
         view.addSubview(rimersCollectionView)
+        
+        addRimerBtn = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: nil)
+        navigationItem.rightBarButtonItem = addRimerBtn
     }
     
     func setConstraint() {
@@ -64,6 +69,18 @@ public class TimersViewController: UIViewController {
     }
     
     func bind() {
+        if let addRimerBtn = addRimerBtn {
+            addRimerBtn.rx.tap
+                .bind { _ in
+                    
+                }
+                .disposed(by: dBag)
+        }
+        
+    }
+    
+    @objc func addRimerView() {
+        print("adddds")
         
     }
     

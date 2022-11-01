@@ -29,8 +29,9 @@ public class TimersCoordinator: Coordinator {
         let timerVC = dpendencies.makeTimersViewController()
         timerVC.view.backgroundColor = .gray
         timerVC.coordi = self
-        nav.navigationBar.isHidden = false
-        nav.navigationItem.title = "라이머"
+        
+        timerVC.title = "라이머"
+//        timerVC.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addRimer))
         self.nav.pushViewController(timerVC, animated: false)
     }
     
