@@ -9,6 +9,9 @@ import UIKit
 import RxSwift
 
 open class ProgrammaticallyView: UIView, Programmaticable {
+    
+    public var removeViewListener : (() -> Void)? = nil
+    
     public var fileName: String = "" {
         willSet {
             print("\(newValue) init")

@@ -30,7 +30,8 @@ public class TimersCoordinator: Coordinator {
         timerVC.view.backgroundColor = .gray
         timerVC.coordi = self
         
-        timerVC.title = "라이머"
+        timerVC.navigationItem.title = "라이머"
+        
 //        timerVC.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addRimer))
         self.nav.pushViewController(timerVC, animated: false)
     }

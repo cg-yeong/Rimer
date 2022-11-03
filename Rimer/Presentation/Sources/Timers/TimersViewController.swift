@@ -18,6 +18,7 @@ public class TimersViewController: UIViewController {
     
     var addRimerBtn: UIBarButtonItem?
     
+    var updateRimerView: UpdateRimerView?
     var coordi: TimersCoordinator?
     
     private var viewModel: TimersViewModel!
@@ -71,17 +72,29 @@ public class TimersViewController: UIViewController {
     func bind() {
         if let addRimerBtn = addRimerBtn {
             addRimerBtn.rx.tap
-                .bind { _ in
-                    
+                .withUnretained(self)
+                .bind { (owner, _) in
+                    guard owner.updateRimerView == nil else { return }
+                    let view = UpdateRimerView(frame: owner.view.frame)
+                    view.viewModel = owner.viewModel
+                    view.removeViewListener = {
+                        owner.updateRimerView = nil
+                    }
+                    owner.view.addSubview(view)
+                    owner.updateRimerView = view
+                    owner.updateRimerView!.snp.makeConstraints {
+                        let tabBarHeight = owner.tabBarController?.tabBar.frame.size.height ?? 50
+                        $0.bottom.equalToSuperview().inset(tabBarHeight)
+                        $0.leading.trailing.equalToSuperview()
+                        $0.top.equalToSuperview().inset(owner.view.safeAreaInsets)
+                    }
                 }
                 .disposed(by: dBag)
         }
         
     }
     
-    @objc func addRimerView() {
-        print("adddds")
-        
+    private func setUpdateRimerView() {
     }
     
     public static func create(with viewModel: TimersViewModel) -> TimersViewController {
