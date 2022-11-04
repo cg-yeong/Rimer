@@ -30,6 +30,7 @@ public class TimersViewController: UIViewController {
         $0.register(RimerCell.self, forCellWithReuseIdentifier: RimerCell.id)
 //        $0.register(<#T##viewClass: AnyClass?##AnyClass?#>, forSupplementaryViewOfKind: <#T##String#>, withReuseIdentifier: <#T##String#>)
         $0.isDirectionalLockEnabled = true
+        
     }
     enum Section: CaseIterable {
         case main
@@ -79,6 +80,15 @@ public class TimersViewController: UIViewController {
                     view.viewModel = owner.viewModel
                     view.removeViewListener = {
                         owner.updateRimerView = nil
+                        owner.viewModel.viewDidLoad() { asd in
+                            
+                            var snap = owner.dataSource.snapshot()
+                            snap.deleteItems(owner.rimerList)
+                            owner.rimerList = asd
+                            snap.appendItems(owner.rimerList)
+                            
+                            owner.dataSource.apply(snap)
+                        }
                     }
                     owner.view.addSubview(view)
                     owner.updateRimerView = view
@@ -130,18 +140,7 @@ extension TimersViewController {
     func updateDiffableSnapShot() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Rimer>()
         snapshot.appendSections([.main])
-//        snapshot.appendItems(rimerList)
-        snapshot.appendItems([
-            Rimer(name: "라면", totalTime: 180.0, thumbnail_desc: "trash"),
-            Rimer(name: "라면", totalTime: 180.0, thumbnail_desc: "folder"),
-            Rimer(name: "라면", totalTime: 180.0, thumbnail_desc: "paperplane"),
-            Rimer(name: "라면", totalTime: 180.0, thumbnail_desc: "book"),
-            Rimer(name: "라면", totalTime: 180.0, thumbnail_desc: "tag"),
-            Rimer(name: "라면", totalTime: 180.0, thumbnail_desc: "pin"),
-            Rimer(name: "라면", totalTime: 180.0, thumbnail_desc: "lightbulb"),
-            Rimer(name: "라면", totalTime: 180.0, thumbnail_desc: "gift"),
-            Rimer(name: "라면", totalTime: 180.0, thumbnail_desc: "gift")
-        ])
+        snapshot.appendItems(rimerList)
         self.dataSource.apply(snapshot, animatingDifferences: true)
         
     }

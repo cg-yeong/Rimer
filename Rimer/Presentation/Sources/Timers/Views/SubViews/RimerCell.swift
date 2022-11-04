@@ -23,6 +23,8 @@ final class RimerCell: UICollectionViewCell {
         $0.text = "00 : 00"
         $0.textColor = .white
         $0.font = .systemFont(ofSize: 16, weight: .bold)
+        $0.numberOfLines = 1
+        $0.lineBreakMode = .byTruncatingTail
     }
     
     private var nameLabel = UILabel().then {
@@ -45,7 +47,7 @@ final class RimerCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        backgroundColor = [UIColor.green, .blue, .systemPink, .purple, .red, .orange, .yellow].randomElement()
+        backgroundColor = [UIColor.green, .blue, .systemPink, .purple, .red, .orange, .yellow].randomElement()?.withAlphaComponent(0.5)
     }
     
     override func prepareForReuse() {
@@ -58,8 +60,7 @@ final class RimerCell: UICollectionViewCell {
     }
     
     func addSubViews() {
-        contentView.addSubview(imageView)
-        [timerLabel, nameLabel].forEach(imageView.addSubview)
+        [imageView ,timerLabel, nameLabel].forEach(contentView.addSubview)
     }
     
     func setConstraint() {
@@ -75,8 +76,9 @@ final class RimerCell: UICollectionViewCell {
         
         nameLabel.snp.remakeConstraints {
             $0.centerX.equalToSuperview()
-            $0.bottom.equalToSuperview()
-            $0.top.greaterThanOrEqualTo(timerLabel.snp.bottom).offset(5)
+            $0.top.equalTo(timerLabel.snp.bottom).offset(5)
+            $0.bottom.greaterThanOrEqualToSuperview()
+            $0.leading.greaterThanOrEqualToSuperview().offset(5)
         }
     }
     

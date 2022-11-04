@@ -196,8 +196,11 @@ extension RimerPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
         case .second:
             self.selectedSecond = seconds[safe: row % seconds.count]
         }
+        // timeformat : hms or ms
+        let hour = selectedHour ?? 0
+        let minute = selectedMinute ?? 0
+        let second = selectedSecond ?? 0
         
-        guard let hour = selectedHour, let minute = selectedMinute, let second = selectedSecond else { return }
         let totalTime = second + (minute * 60) + (hour * 3600)
         onTotalTimeListener?(totalTime)
     }

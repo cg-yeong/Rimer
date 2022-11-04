@@ -38,6 +38,7 @@ public class RimerUseCaseProvider: RimerUseCase {
     public func add(timer: Rimer, completion: @escaping ((Rimer) -> Void)) {
         rimerRepo.addRimer(timer: timer) { rimer in
             print(rimer)
+            completion(rimer)
         }
     }
     

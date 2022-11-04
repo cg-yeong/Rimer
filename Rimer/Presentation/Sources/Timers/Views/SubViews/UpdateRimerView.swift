@@ -25,9 +25,9 @@ class UpdateRimerView: ProgrammaticallyView {
         $0.clipsToBounds = true
     }
     
-//    let contentScrollView = UIScrollView().then {
-//        $0.backgroundColor = .blue
-//    }
+    let contentScrollView = UIScrollView().then {
+        $0.backgroundColor = .blue
+    }
     
     let nameLabel = UILabel().then {
         $0.text = "이름"
@@ -94,9 +94,10 @@ class UpdateRimerView: ProgrammaticallyView {
     let completeBtn = UIButton().then {
         $0.setTitle("완료", for: .normal)
         $0.titleLabel?.font = .boldSystemFont(ofSize: 16)
-        $0.backgroundColor = .darkGray
+        $0.backgroundColor = .systemYellow
         $0.layer.cornerRadius = 16
         $0.clipsToBounds = true
+        $0.isEnabled = false
     }
     
     let cancelBtn = UIButton().then {
@@ -108,6 +109,8 @@ class UpdateRimerView: ProgrammaticallyView {
     }
     
     var viewModel: TimersViewModel!
+    
+    var tempTime: Double = 0.0
     
     override func addComponent() {
         fileName = #file.fileName
@@ -191,9 +194,30 @@ class UpdateRimerView: ProgrammaticallyView {
     
     
     override func bind() {
+        var valiTimer = BehaviorRelay(value: false)
+        
         timerPickView.onTotalTimeListener = { timeSeconds in
             print("시간초 : \(timeSeconds)")
+            self.tempTime = Double(timeSeconds)
+            self.viewModel.validateTimer.accept(timeSeconds != 0)
+            valiTimer.accept(timeSeconds != 0)
         }
+        
+        var validName = nameField.rx.text
+            .orEmpty
+            .distinctUntilChanged()
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .map { !$0.isEmpty }
+            
+        lazy var enableCompleteBtn = Binder<Bool>(completeBtn) { btn, bool in
+            btn.backgroundColor = bool ? .systemOrange : .darkGray
+            btn.isEnabled = bool
+        }
+        
+        Observable.combineLatest(validName, valiTimer) { $0 && $1 }
+            .bind(to: enableCompleteBtn)
+            .disposed(by: disposeBag)
+        
         
         let close = UITapGestureRecognizer()
         backgroundView.addGestureRecognizer(close)
@@ -208,10 +232,20 @@ class UpdateRimerView: ProgrammaticallyView {
             }
             .disposed(by: disposeBag)
         
+        
         completeBtn.rx.tap
             .withUnretained(self)
             .bind { (owner, tap) in
-                
+                owner.viewModel.didTapSave(
+                    rimer: Rimer(name: owner.nameField.text ?? "",
+                                 totalTime: owner.tempTime,
+                                 thumbnail_desc: "clock")
+                ) {
+                    if let listener = owner.removeViewListener {
+                        listener()
+                    }
+                    owner.removeFromSuperview()
+                }
             }
             .disposed(by: disposeBag)
         
@@ -227,12 +261,17 @@ class UpdateRimerView: ProgrammaticallyView {
         
         
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        nameField.endEditing(true)
+    }
 
 }
 
 
 #if canImport(SwiftUI) && DEBUG
 import SwiftUI
+import Domain
 
 struct UpdateRimerViewPreview: PreviewProvider {
     static var previews: some View {

@@ -9,12 +9,15 @@ import Foundation
 import Util
 import Domain
 import RxSwift
+import RxCocoa
 
 protocol TimersViewModelInput {
     
 }
 
 public class TimersViewModel: ViewModelTypeProtocol {
+    
+    var validateTimer: BehaviorRelay<Bool> = .init(value: false)
     
     private var timersUseCase: RimerUseCase
     private let bag = DisposeBag()
@@ -30,6 +33,10 @@ public class TimersViewModel: ViewModelTypeProtocol {
         }
     }
     
-    
+    func didTapSave(rimer: Rimer, completion: (() -> Void)? = nil) {
+        timersUseCase.add(timer: rimer) { _ in
+            completion?()
+        }
+    }
     
 }

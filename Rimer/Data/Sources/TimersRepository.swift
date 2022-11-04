@@ -41,7 +41,7 @@ public class TimersRepsitory: TimersRepositoryProtocol {
         completion(rimerList)
     }
     
-    public func addRimer(timer: Domain.Rimer, completion: @escaping ((Domain.Rimer?) -> Void)) {
+    public func addRimer(timer: Domain.Rimer, completion: @escaping ((Domain.Rimer) -> Void)) {
 //        if let data = storage.value(forKey: "Rimers") as? Data {
 //            var timers = try? PropertyListDecoder().decode([Rimer].self, from: data)
 //            timers?.append(timer)

@@ -13,7 +13,7 @@ public protocol TimersRepositoryProtocol {
     func fetchTimersList(completion: @escaping ([Rimer]) -> Void)
 //    func fetchTimers() -> Observable<[Rimer]>
     
-    func addRimer(timer: Rimer, completion: @escaping ((Rimer?) -> Void))
+    func addRimer(timer: Rimer, completion: @escaping ((Rimer) -> Void))
 //    func addTimer(timer: Rimer) -> Observable<Void>
     
     func updateRimer(timer: Rimer, completion: @escaping ((Rimer) -> Void))
