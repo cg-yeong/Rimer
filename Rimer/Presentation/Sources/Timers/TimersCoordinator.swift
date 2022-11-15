@@ -27,7 +27,7 @@ public class TimersCoordinator: Coordinator {
     
     public func start() {
         let timerVC = dpendencies.makeTimersViewController()
-        timerVC.view.backgroundColor = .gray
+        timerVC.view.backgroundColor = .systemBackground
         timerVC.coordi = self
         
         timerVC.navigationItem.title = "라이머"

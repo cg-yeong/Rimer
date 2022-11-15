@@ -29,7 +29,7 @@ public class SettingEtcCoordinator: Coordinator {
     
     public func start() {
         let vc = dpendencies.makeSettingEtcViewController()
-        vc.view.backgroundColor = .gray
+        vc.view.backgroundColor = .systemBackground
         vc.coordinator = self
         nav.navigationBar.prefersLargeTitles = true
         nav.pushViewController(vc, animated: false)
