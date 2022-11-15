@@ -16,7 +16,8 @@ let dependencies = Dependencies(
         .then,
         .snapKit,
         .rxSwift,
-        .alamofire
+        .alamofire,
+        .realmSwift
     ],
     platforms: [.iOS]
 )
@@ -29,4 +30,5 @@ public extension Package {
     static let snapKit: Package     = .remote(url: "https://github.com/SnapKit/SnapKit", requirement: .upToNextMajor(from: "5.0.1"))
     static let rxSwift: Package     = .remote(url: "https://github.com/ReactiveX/RxSwift", requirement: .branch("main"))
     static let alamofire: Package   = .remote(url: "https://github.com/Alamofire/Alamofire.git", requirement: .upToNextMajor(from: "5.6.1"))
+    static let realmSwift: Package  = .remote(url: "https://github.com/realm/realm-swift.git", requirement: .upToNextMajor(from: "10.32.3"))
 }

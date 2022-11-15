@@ -9,8 +9,10 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.framework(
-    name: "Data",
+    name: Module.data.name,
     dependencies: [
-        .project(target: "Util", path: .relativeToRoot("Rimer/Util"))
+        .swiftyJSON,
+        Module.util.project,
+        Module.domain.project
     ]
 )

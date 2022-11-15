@@ -9,8 +9,9 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.framework(
-    name: "Presentation",
+    name: Module.presentation.name,
     dependencies: [
-        .project(target: "Util", path: .relativeToRoot("Rimer/Util"))
+        Module.util.project,
+        Module.domain.project
     ]
 )

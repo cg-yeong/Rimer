@@ -9,6 +9,13 @@ import ProjectDescription
 
 public enum Module {
     case app
+    
+    case data
+    
+    case presentation
+    
+    case domain
+    
     case util
     
 }
@@ -20,6 +27,12 @@ extension Module {
             return "App"
         case .util:
             return "Util"
+        case .data:
+            return "Data"
+        case .presentation:
+            return "Presentation"
+        case .domain:
+            return "Domain"
         }
     }
     

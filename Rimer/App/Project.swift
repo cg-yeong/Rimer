@@ -4,11 +4,11 @@ import ProjectDescriptionHelpers
 // MARK: - Project
 
 let project = Project.app(
-    name: "App",
+    name: Module.app.name,
     dependencies: [
-        .project(target: "Domain", path: .relativeToRoot("Rimer/Domain")),
-        .project(target: "Presentation", path: .relativeToRoot("Rimer/Presentation")),
-        .project(target: "Data", path: .relativeToRoot("Rimer/Data")),
-        .project(target: "Util", path: .relativeToRoot("Rimer/Util"))
+        Module.domain.project,
+        Module.data.project,
+        Module.presentation.project,
+        Module.util.project
     ]
 )

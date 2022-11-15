@@ -6,7 +6,7 @@ import ProjectDescriptionHelpers
 let project = Project.framework(
     name: "Util",
     dependencies: [
-        .kingfisher, .swiftyJSON, .toast, .snapKit, .then, .rxSwift, .rxCocoa, .alamofire
+        .kingfisher, .swiftyJSON, .toast, .snapKit, .then, .rxSwift, .rxCocoa, .alamofire, .realmSwift
     ]
 )
 

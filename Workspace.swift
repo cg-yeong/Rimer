@@ -9,9 +9,9 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let workspace = Workspace(name: "Rimer", projects: [
-    .relativeToRoot("Rimer/App"),
-    .relativeToRoot("Rimer/Domain"),
-    .relativeToRoot("Rimer/Presentation"),
-    .relativeToRoot("Rimer/Data"),
-    .relativeToRoot("Rimer/Util")
+    Module.app.path,
+    Module.domain.path,
+    Module.presentation.path,
+    Module.data.path,
+    Module.util.path
 ])
