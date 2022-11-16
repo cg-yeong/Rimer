@@ -7,7 +7,7 @@ import ProjectDescription
 
 extension Project {
     
-    static let bundleID = "com.yeong.Rimer"
+    static let bundleID = "com.yeong"
     static let iosVersion = "13.0"
     
     public static func app(
@@ -95,13 +95,18 @@ extension Project {
 }
 
 public extension TargetDependency {
-    static let kingfisher: TargetDependency = .external(name: "Kingfisher")
-    static let toast: TargetDependency      = .external(name: "Toast")
-    static let swiftyJSON: TargetDependency = .external(name: "SwiftyJSON")
-    static let then: TargetDependency       = .external(name: "Then")
-    static let snapKit: TargetDependency    = .external(name: "SnapKit")
-    static let rxSwift: TargetDependency    = .external(name: "RxSwift")
-    static let rxCocoa: TargetDependency    = .external(name: "RxCocoa")
-    static let alamofire: TargetDependency  = .external(name: "Alamofire")
-    static let realmSwift: TargetDependency = .external(name: "RealmSwift")
+    static let rxSwift: TargetDependency        = .external(name: "RxSwift")
+    static let rxCocoa: TargetDependency        = .external(name: "RxCocoa")
+    static let rxRelay: TargetDependency        = .external(name: "RxRelay")
+    static let rxDataSources: TargetDependency  = .external(name: "RxDataSources")
+    static let rxKeyboard: TargetDependency     = .external(name: "RxKeyboard")
+    static let rxGesture: TargetDependency      = .external(name: "RxGesture")
+    static let alamofire: TargetDependency      = .external(name: "Alamofire")
+    static let moya: TargetDependency           = .external(name: "Moya")
+    static let rxMoya: TargetDependency         = .external(name: "RxMoya")
+    static let snapKit: TargetDependency        = .external(name: "SnapKit")
+    static let then: TargetDependency           = .external(name: "Then")
+    static let swiftyJSON: TargetDependency     = .external(name: "SwiftyJSON")
+    static let kingfisher: TargetDependency     = .external(name: "Kingfisher")
+    static let toast: TargetDependency          = .external(name: "Toast")
 }

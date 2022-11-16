@@ -11,8 +11,8 @@ import ProjectDescriptionHelpers
 let project = Project.framework(
     name: Module.data.name,
     dependencies: [
-        .swiftyJSON,
         Module.util.project,
-        Module.domain.project
+        Module.domain.project,
+        .moya
     ]
 )

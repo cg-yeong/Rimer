@@ -4,9 +4,18 @@ import ProjectDescriptionHelpers
 // MARK: - Project
 
 let project = Project.framework(
-    name: "Util",
+    name: Module.util.name,
     dependencies: [
-        .kingfisher, .swiftyJSON, .toast, .snapKit, .then, .rxSwift, .rxCocoa, .alamofire, .realmSwift
-    ]
+        .kingfisher,
+        .swiftyJSON,
+        .toast,
+        .rxSwift,
+        .rxCocoa,
+        .rxKeyboard,
+        .rxGesture,
+        .snapKit,
+        .then
+    ],
+    resources: .default
 )
 

@@ -10,12 +10,16 @@ import ProjectDescription
 public enum Module {
     case app
     
+    // Repository, DataStore
     case data
     
+    // Presentation
     case presentation
     
+    // Domain
     case domain
     
+    // Design, UIs
     case util
     
 }

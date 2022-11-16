@@ -12,6 +12,9 @@ let project = Project.framework(
     name: Module.presentation.name,
     dependencies: [
         Module.util.project,
-        Module.domain.project
-    ]
+        Module.domain.project,
+        .rxSwift,
+        .rxCocoa
+    ],
+    resources: .default
 )
