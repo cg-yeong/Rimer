@@ -281,16 +281,6 @@ struct UpdateRimerViewPreview: PreviewProvider {
         }
         .previewLayout(.device)
         .previewDevice("iPhone 14")
-        
-//        if #available(iOS 15.0, *) {
-//            UIViewPreview {
-//                let view = UpdateRimerView(frame: .zero)
-//                return view
-//            }
-//            .previewInterfaceOrientation(.landscapeRight)
-//        } else {
-//            // Fallback on earlier versions
-//        }
     }
 }
 #endif

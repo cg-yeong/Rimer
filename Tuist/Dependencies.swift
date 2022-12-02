@@ -8,7 +8,7 @@
 import ProjectDescription
 
 let dependencies = Dependencies(
-    carthage: [],
+    carthage: nil,
     swiftPackageManager: [
         .rxSwift,
         .rxDataSources,
@@ -37,4 +37,5 @@ public extension Package {
     static let then: Package        = .remote(url: "https://github.com/devxoul/Then", requirement: .upToNextMajor(from: "2.7.0"))
     static let snapKit: Package     = .remote(url: "https://github.com/SnapKit/SnapKit", requirement: .upToNextMajor(from: "5.0.1"))
     static let alamofire: Package   = .remote(url: "https://github.com/Alamofire/Alamofire.git", requirement: .upToNextMajor(from: "5.6.1"))
+    static let realmSwift: Package  = .remote(url: "https://github.com/realm/realm-swift.git", requirement: .upToNextMajor(from: "10.32.3"))
 }

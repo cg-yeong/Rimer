@@ -109,4 +109,6 @@ public extension TargetDependency {
     static let swiftyJSON: TargetDependency     = .external(name: "SwiftyJSON")
     static let kingfisher: TargetDependency     = .external(name: "Kingfisher")
     static let toast: TargetDependency          = .external(name: "Toast")
+    static let realmSwift: TargetDependency     = .external(name: "RealmSwift")
+    static let realm: TargetDependency          = .external(name: "Realm")
 }

@@ -6,6 +6,19 @@
 //
 
 import Foundation
-import Util
 import RealmSwift
 
+class Rime: Object {
+    @Persisted(primaryKey: true) var _id: ObjectId
+    @Persisted var rimeId: UUID = UUID()
+    @Persisted var name: String = ""
+    @Persisted var totalTime: Double = 0.0
+    @Persisted var thumbnail: String = ""
+    
+    convenience init(name: String, time: Double, thumbnail: String) {
+        self.init()
+        self.name = name
+        self.totalTime = time
+        self.thumbnail = thumbnail
+    }
+}
