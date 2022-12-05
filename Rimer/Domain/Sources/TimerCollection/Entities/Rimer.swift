@@ -21,11 +21,29 @@ public struct Rimer: Identifiable, Hashable {
         self.thumbnail_desc = thumbnail_desc
     }
     
+    public init() {
+        self.id = UUID()
+        self.name = ""
+        self.totalTime = 0
+        self.thumbnail_desc = ""
+    }
+    
     enum CodingKeys: String, CodingKey {
         case id
         case name
         case totalTime
         case thumbnail_desc
+    }
+}
+
+public struct RimerList {
+    public var rimers: [Rimer]
+    
+    public init(rimers: [Rimer]) {
+        self.rimers = rimers
+    }
+    public init() {
+        self.rimers = []
     }
 }
 

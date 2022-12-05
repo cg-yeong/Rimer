@@ -13,18 +13,20 @@ class MainDIContainer {
     
     public init() {}
     
+    /// MainCoordinator 생성
     func makeMainCoordinator(tabBarController: RimerTabBarController) -> MainCoordinator {
         return MainCoordinator(coordinator: tabBarController, dependencies: self)
     }
 }
 
 extension MainDIContainer: MainCoordinatorDependencies {
-    func makeTimersCoordinator(navigationController: UINavigationController) -> Presentation.TimersCoordinator {
-        let diCont = TimersDIContainer()
-        return diCont.makeTimersCoordinator(navigationController: navigationController)
+    
+    func makeRimerCoordinator(navigationController: UINavigationController) -> Presentation.RimersCoordinator {
+        let diContainer = RimersDIContainer()
+        return diContainer.makeRimersCoordinator(navigationController: navigationController)
     }
 
-    func makeSettingCoordinator(navigationController: UINavigationController) -> Presentation.SettingEtcCoordinator {
+    func makeSettingsCoordinator(navigationController: UINavigationController) -> Presentation.SettingEtcCoordinator {
         let diCont = SettingsDIContainer()
         return diCont.makeSettingsCoordinator(navigationController: navigationController)
     }

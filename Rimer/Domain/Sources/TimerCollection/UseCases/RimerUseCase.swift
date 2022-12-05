@@ -29,9 +29,9 @@ public protocol RimerUseCase: AddRimerUseCase, FetchRimerListUseCase, UpdateRime
 
 public class RimerUseCaseProvider: RimerUseCase {
     
-    private let rimerRepo: TimersRepositoryProtocol
+    private let rimerRepo: RimersRepositoryProtocol
     
-    public init(rimerRepo: TimersRepositoryProtocol) {
+    public init(rimerRepo: RimersRepositoryProtocol) {
         self.rimerRepo = rimerRepo
     }
     

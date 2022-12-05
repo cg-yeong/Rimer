@@ -108,7 +108,7 @@ class UpdateRimerView: ProgrammaticallyView {
         $0.clipsToBounds = true
     }
     
-    var viewModel: TimersViewModel!
+    var viewModel: RimersViewModel!
     
     var tempTime: Double = 0.0
     

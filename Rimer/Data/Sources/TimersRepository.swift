@@ -11,7 +11,7 @@ import Util
 import RxSwift
 import RxCocoa
 
-public class TimersRepsitory: TimersRepositoryProtocol {
+public class TimersRepsitory: RimersRepositoryProtocol {
     
     private let storage: UserDefaults
     var rimerList: [Rimer] {

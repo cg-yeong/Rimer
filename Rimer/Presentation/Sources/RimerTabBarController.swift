@@ -12,8 +12,9 @@ public class RimerTabBarController: UITabBarController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
-        tabBar.backgroundColor = .systemBackground
-        tabBar.unselectedItemTintColor = .label
+        tabBar.backgroundColor = .gray
+        tabBar.unselectedItemTintColor = .white
+        tabBar.tintColor = .blue
     }
 }
 

@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-public protocol TimersRepositoryProtocol {
+public protocol RimersRepositoryProtocol {
     
     func fetchTimersList(completion: @escaping ([Rimer]) -> Void)
 //    func fetchTimers() -> Observable<[Rimer]>
