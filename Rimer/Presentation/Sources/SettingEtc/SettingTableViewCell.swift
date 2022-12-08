@@ -59,7 +59,8 @@ class SettingTableViewCell: UITableViewCell {
         contentView.addSubview(label)
         contentView.addSubview(iconContainer)
         iconContainer.addSubview(iconImageView)
-        contentView.clipsToBounds = true
+        contentView.clipsToBounds = false
+        contentView.layer.masksToBounds = false
         accessoryType = .disclosureIndicator
     }
     
@@ -99,6 +100,20 @@ class SettingTableViewCell: UITableViewCell {
         label.text = model.title
         iconImageView.image = model.icon
         iconContainer.backgroundColor = model.iconBgColor
+        
+        if model.title == "아무개와 특별한 대화를 함께하기" {
+            let etooRange = (self.label.text! as NSString).range(of: "특별한 대화")
+            
+            let attributedStr = NSMutableAttributedString(string: label.text!)
+            attributedStr.addAttributes([
+                .strikethroughStyle: 6,
+                .strikethroughColor: UIColor.purple.withAlphaComponent(0.5),
+            ], range: etooRange)
+            label.attributedText = attributedStr
+            
+        }
     }
+    
+    
     
 }

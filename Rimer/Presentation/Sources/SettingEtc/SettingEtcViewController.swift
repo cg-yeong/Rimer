@@ -142,7 +142,7 @@ extension SettingEtcViewController: UITableViewDelegate, UITableViewDataSource {
                                    ),
                         .staticCell(model:
                                         SettingsOption(
-                                            title: "Bluetooth",
+                                            title: "아무개와 특별한 대화를 함께하기",
                                             icon: UIImage(systemName: "house"),
                                             iconBgColor: .systemGreen,
                                             handler: {
