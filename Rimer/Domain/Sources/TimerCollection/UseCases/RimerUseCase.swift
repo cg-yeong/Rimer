@@ -62,7 +62,7 @@ public class RimerUseCaseProvider: RimerUseCase {
 
 public class RxRimerUseCaseProvier: RimerRepoInterface {
     public func fetch() -> RxSwift.Observable<[Rimer]> {
-        <#code#>
+        rimerRxRepo.fetch()
     }
     
     public func save(rimer: Rimer) -> RxSwift.Observable<Void> {

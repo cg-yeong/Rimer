@@ -24,14 +24,20 @@ protocol RimerGridViewModel: RimersViewModelInput, RimersViewModelOutput {}
 public class RimersViewModel: ViewModelType {
     
     public struct Input {
+        // RimersViewController
+        let createRimerTrigger: Driver<Void>
+        
+        // RimerGridView
+        let trigger: Driver<Void>
+        let selection: Driver<IndexPath>
         
     }
     
     public struct Output {
-        
-    }
-    var validateTimer: BehaviorRelay<Bool> = .init(value: false)
-    //private var rimersUseCase: RimerUseCase
+        let fetching: Driver<Bool>
+        let rimers: Driver<[RimerItemViewModel]>
+        let selectedRimer: Driver<Rimer>    }
+    
     private var rimersUseCase: RimerRepoInterface
     private let bag = DisposeBag()
     
@@ -46,12 +52,23 @@ public class RimersViewModel: ViewModelType {
 //    }
     public init(rimerUseCase: RimerRepoInterface) {
         self.rimersUseCase = rimerUseCase
+        
     }
     
     
     public func transform(input: Input) -> Output {
         
-        return Output()
+        let rimers = input.trigger.flatMapLatest { act in
+            return self.rimersUseCase.fetch()
+                //.trackActivity
+                //.trackError
+                .asDriver(onErrorJustReturn: [])
+                .map { $0.map { RimerItemViewModel(with: $0) } }
+        }
+        
+        return Output(fetching: <#T##Driver<Bool>#>,
+                      rimers: rimers,
+                      selectedRimer: <#T##Driver<Rimer>#>)
     }
     
 }

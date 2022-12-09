@@ -24,7 +24,7 @@ public final class RimerRepoImplements: Domain.RimerRepoInterface {
     }
     
     public func fetch() -> RxSwift.Observable<[Domain.Rimer]> {
-        return <#Observable<[Rimer]>#>
+        return repository.queryAll()
     }
     
     public func save(rimer: Domain.Rimer) -> RxSwift.Observable<Void> {

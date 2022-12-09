@@ -11,6 +11,8 @@ import SnapKit
 import SwiftyJSON
 import Kingfisher
 
+import Domain
+
 final class RimerCell: UICollectionViewCell {
     
     static let id = "RimerCell"
@@ -91,6 +93,16 @@ final class RimerCell: UICollectionViewCell {
             imageView.image = UIImage(systemName: data["thumbnail_desc"].stringValue)
         }
         
+    }
+    
+    func configData(with: Rimer) {
+        timerLabel.text = Int(with.totalTime).toColonTime
+        nameLabel.text = with.name
+        if with.thumbnail_desc.contains("://") {
+            imageView.kf.setImage(with: URL(string: with.thumbnail_desc))
+        } else {
+            imageView.image = UIImage(systemName: with.thumbnail_desc)
+        }
     }
     
 }

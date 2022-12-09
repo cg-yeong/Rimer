@@ -11,44 +11,23 @@ import RxSwift
 import Util
 import Then
 import SnapKit
-import Domain
+//import Domain
 import SwiftyJSON
 
 public class RimersViewController: UIViewController {
     
     var coordinator: RimersCoordinator?
     
-    let dBag = DisposeBag()
-    private var viewModel: RimersViewModel!
-    
     var rimerGridView: RimerGridView!
-    
     var addRimerBtn: UIBarButtonItem?
     let addRimerButton = UIButton().then { btn in
         btn.setImage(UIImage(systemName: "plus.circle"), for: .normal)
-//        btn.setTitle("더하기", for: .normal)
-//        btn.setTitleColor(UIColor.brown, for: .normal)
-//        btn.backgroundColor = .blue
     }
     /// rimerGridView
-//    var updateRimerView: UpdateRimerView?
+    var updateRimerView: UpdateRimerView?
     
-    
-//    private var gridFlowLayout = GridCollecitonViewFlowLayout()
-//    private var rimersCollectionView = UICollectionView(frame: .zero, collectionViewLayout: GridCollecitonViewFlowLayout()).then {
-//        $0.isScrollEnabled = true
-//        $0.clipsToBounds = true
-//        $0.register(RimerCell.self, forCellWithReuseIdentifier: RimerCell.id)
-//        $0.register(<#T##viewClass: AnyClass?##AnyClass?#>, forSupplementaryViewOfKind: <#T##String#>, withReuseIdentifier: <#T##String#>)
-//        $0.isDirectionalLockEnabled = true
-//
-//    }
-//    enum Section: CaseIterable {
-//        case main
-//    }
-//    var dataSource: UICollectionViewDiffableDataSource<Section, Rimer>!
-//    var rimerList: [Rimer] = []
-    
+    let dBag = DisposeBag()
+    private var viewModel: RimersViewModel!
     
     // MARK: - Lifecycle
     public static func create(with viewModel: RimersViewModel) -> RimersViewController {
@@ -59,13 +38,16 @@ public class RimersViewController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        commonInit()
         setRimerGridView()
-        viewModel.viewDidLoad() { rimerList in
-//            self.rimerList = rimerList
-        }
-        
-        
+        commonInit()
+//        viewModel.viewDidLoad() { rimerList in
+//
+//            var snap = self.rimerGridView.dataSource.snapshot()
+//            snap.deleteItems(self.rimerGridView.rimerList)
+//            self.rimerGridView.rimerList = rimerList
+//            snap.appendItems(self.rimerGridView.rimerList)
+//            self.rimerGridView.dataSource.apply(snap)
+//        }
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -82,16 +64,9 @@ public class RimersViewController: UIViewController {
     func addComponent() {
 //        [addRimerButton].forEach(view.addSubview)
         view.addSubview(addRimerButton)
-//        view.addSubview(rimersCollectionView)
-//
-//        addRimerBtn = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: nil)
-//        navigationItem.rightBarButtonItem = addRimerBtn
     }
     
     func setConstraint() {
-//        rimersCollectionView.snp.remakeConstraints {
-//            $0.leading.trailing.bottom.top.equalTo(view.safeAreaLayoutGuide)
-//        }
         addRimerButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.trailing.equalToSuperview().inset(16)
@@ -99,49 +74,43 @@ public class RimersViewController: UIViewController {
         }
     }
     
-    func bind() {
+    func bind() { // bindViewModel()
+        
+        
         addRimerButton.rx.tap
             .filter { _ in !self.rimerGridView.gridView.isDragging }
             .bind { [weak self] _ in
                 print("\(#file.fileName) :: \(#function) - addRimerBtn Click")
+                guard let self = self else { return }
+                let view = UpdateRimerView(frame: self.view.frame)
+                view.viewModel = self.viewModel
+                view.removeViewListener = {
+                    self.updateRimerView = nil
+                    /*
+                    self.viewModel.viewDidLoad() { asd in
+                        var snap = self.rimerGridView.dataSource.snapshot()
+                        snap.deleteItems(self.rimerGridView.rimerList)
+                        self.rimerGridView.rimerList = asd
+                        snap.appendItems(self.rimerGridView.rimerList)
+                        self.rimerGridView.dataSource.apply(snap)
+                    }*/
+                }
+                self.view.addSubview(view)
+                self.updateRimerView = view
+                self.updateRimerView!.snp.makeConstraints { make in
+                    let tabBarHeight = self.tabBarController?.tabBar.frame.size.height ?? 50
+                    make.bottom.equalToSuperview().inset(tabBarHeight)
+                    make.leading.trailing.equalToSuperview()
+                    make.top.equalToSuperview().inset(self.view.safeAreaInsets)
+                }
             }
             .disposed(by: dBag)
-        
-//        if let addRimerBtn = addRimerBtn {
-//            addRimerBtn.rx.tap
-//                .withUnretained(self)
-//                .bind { (owner, _) in
-//                    guard owner.updateRimerView == nil else { return }
-//                    let view = UpdateRimerView(frame: owner.view.frame)
-//                    view.viewModel = owner.viewModel
-//                    view.removeViewListener = {
-//                        owner.updateRimerView = nil
-//                        owner.viewModel.viewDidLoad() { asd in
-//
-//                            var snap = owner.dataSource.snapshot()
-//                            snap.deleteItems(owner.rimerList)
-//                            owner.rimerList = asd
-//                            snap.appendItems(owner.rimerList)
-//
-//                            owner.dataSource.apply(snap)
-//                        }
-//                    }
-//                    owner.view.addSubview(view)
-//                    owner.updateRimerView = view
-//                    owner.updateRimerView!.snp.makeConstraints {
-//                        let tabBarHeight = owner.tabBarController?.tabBar.frame.size.height ?? 50
-//                        $0.bottom.equalToSuperview().inset(tabBarHeight)
-//                        $0.leading.trailing.equalToSuperview()
-//                        $0.top.equalToSuperview().inset(owner.view.safeAreaInsets)
-//                    }
-//                }
-//                .disposed(by: dBag)
-//        }
         
     }
     
     private func setRimerGridView() {
         self.rimerGridView = RimerGridView()
+        rimerGridView.viewModel = viewModel
         view.addSubview(rimerGridView)
         
         rimerGridView.snp.makeConstraints {

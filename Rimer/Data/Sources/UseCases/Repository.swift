@@ -21,9 +21,9 @@ protocol AbstractRepsitory {
 }
 
 public class Repository: AbstractRepsitory {
-    typealias T = Rimer
-//   T: RealmRepresentable where T == T.RealmType.DomainType, T.RealmType: Object
+    typealias T = Rimer // T == T.RealmType.DomainType, T.RealmType: Object
     private let configuration: Realm.Configuration
+    
     
     public init(configuration: Realm.Configuration = Realm.Configuration()) {
         self.configuration = configuration
