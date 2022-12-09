@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+protocol RealmRepresentable {
+    associatedtype RealmType: DomainConvertibleType
+    
+    var uid: UUID { get }
+    
+    func asRealm() -> RealmType
+}
