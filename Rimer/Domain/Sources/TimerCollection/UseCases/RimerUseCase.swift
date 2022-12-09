@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RxSwift
 
 public protocol FetchRimerListUseCase {
     func fetch(completion: @escaping (([Rimer]) -> Void))
@@ -23,9 +24,7 @@ public protocol DeleteRimerUseCase {
     func delete(timer: Rimer, completion: @escaping (() -> Void))
 }
 
-public protocol RimerUseCase: AddRimerUseCase, FetchRimerListUseCase, UpdateRimerUseCase, DeleteRimerUseCase {
-    
-}
+public protocol RimerUseCase: AddRimerUseCase, FetchRimerListUseCase, UpdateRimerUseCase, DeleteRimerUseCase { }
 
 public class RimerUseCaseProvider: RimerUseCase {
     
@@ -59,4 +58,30 @@ public class RimerUseCaseProvider: RimerUseCase {
             print("DELETE")
         }
     }
+}
+
+public class RxRimerUseCaseProvier: RimerRepoInterface {
+    public func fetch() -> RxSwift.Observable<[Rimer]> {
+        <#code#>
+    }
+    
+    public func save(rimer: Rimer) -> RxSwift.Observable<Void> {
+        <#code#>
+    }
+    
+    public func delete(rimer: Rimer) -> RxSwift.Observable<Void> {
+        <#code#>
+    }
+    
+    public func update(rimer: Rimer) -> RxSwift.Observable<Rimer> {
+        <#code#>
+    }
+    
+    
+    private let rimerRxRepo: RimerRepoInterface
+    
+    public init(repo: RimerRepoInterface) {
+        self.rimerRxRepo = repo
+    }
+    
 }

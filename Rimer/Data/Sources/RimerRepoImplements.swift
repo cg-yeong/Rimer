@@ -11,43 +11,32 @@ import RxCocoa
 
 import Domain
 import Util
+import Realm
+import RealmSwift
 
 
-public class RimerRepoImplements: Domain.RimerRepoInterface {
-    private let repo: UserDefaults
-    private var rimerList: [Rimer] {
-        get {
-            var list: [Rimer]?
-            if let data = repo.value(forKey: "Rimers") as? Data {
-                list = try? PropertyListDecoder().decode([Rimer].self, from: data)
-            }
-            return list ?? []
-        }
-        set {
-            repo.set(try? PropertyListEncoder().encode(newValue), forKey: "Rimers")
-        }
-    }
+public final class RimerRepoImplements: Domain.RimerRepoInterface {
     
-    public init(repoName: String) {
-        self.repo = UserDefaults(suiteName: repoName) ?? .standard
+    private let repository: Repository
+    
+    public init(repository: Repository) {
+        self.repository = repository
     }
     
     public func fetch() -> RxSwift.Observable<[Domain.Rimer]> {
-        return Observable.just(rimerList)
+        return <#Observable<[Rimer]>#>
     }
     
     public func save(rimer: Domain.Rimer) -> RxSwift.Observable<Void> {
-        return Observable.deferred {
-            return self.repo.rx.save(obj: rimer)
-        }.subscribe(on: MainScheduler())
+        return .just(())
     }
     
     public func delete(rimer: Domain.Rimer) -> RxSwift.Observable<Void> {
-        <#code#>
+        return .just(())
     }
     
     public func update(rimer: Domain.Rimer) -> RxSwift.Observable<Domain.Rimer> {
-        <#code#>
+        return <#Observable<Rimer>#>
     }
     
     

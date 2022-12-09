@@ -11,6 +11,7 @@ import Domain
 import Util
 import UIKit
 
+/// 코디네이터는 DI를 만들고 DI를 통해 Coordinator를 만든 후 뷰를 올려준다.
 public class AppFlowCoordinator: Coordinator {
     public var childCoordinators: [Util.Coordinator] = []
     

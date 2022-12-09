@@ -6,3 +6,13 @@
 //
 
 import Foundation
+import RxSwift
+
+public protocol RimerRepoInterface {
+    
+    func fetch() -> Observable<[Rimer]>
+    func save(rimer: Rimer) -> Observable<Void>
+    func delete(rimer: Rimer) -> Observable<Void>
+    func update(rimer: Rimer) -> Observable<Rimer>
+    
+}

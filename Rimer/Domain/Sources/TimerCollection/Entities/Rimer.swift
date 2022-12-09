@@ -21,6 +21,13 @@ public struct Rimer: Identifiable, Hashable {
         self.thumbnail_desc = thumbnail_desc
     }
     
+    public init(id: UUID, name: String, totalTime: Double, thumbnail_desc: String) {
+        self.id = id
+        self.name = name
+        self.totalTime = totalTime
+        self.thumbnail_desc = thumbnail_desc
+    }
+    
     public init() {
         self.id = UUID()
         self.name = ""
@@ -33,17 +40,6 @@ public struct Rimer: Identifiable, Hashable {
         case name
         case totalTime
         case thumbnail_desc
-    }
-}
-
-public struct RimerList {
-    public var rimers: [Rimer]
-    
-    public init(rimers: [Rimer]) {
-        self.rimers = rimers
-    }
-    public init() {
-        self.rimers = []
     }
 }
 

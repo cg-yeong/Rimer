@@ -13,16 +13,31 @@ import UIKit
 
 final class RimersDIContainer {
     
+    /// New.2 Realm
+    func makeRMRimerRepo() -> RimerRepoInterface {
+        let repository = Repository()
+        return RimerRepoImplements(repository: repository)
+    }
+    
+    /// New.2 Realm
+    func makeRMRimerUseCase() -> RimerRepoInterface {
+        return RxRimerUseCaseProvier(repo: makeRMRimerRepo())
+    }
+    
+    /// Old.1
     func makeRimerRepository() -> RimersRepositoryProtocol {
         return TimersRepsitory(storageName: "storage.rimer")
     }
     
+    /// Old.1
     func makeRimersUseCase() -> RimerUseCase {
         return RimerUseCaseProvider(rimerRepo: makeRimerRepository())
     }
     
+    // TODO: UseCase 변경
     func makeRimersViewModel() -> RimersViewModel {
-        return RimersViewModel(timerUseCase: makeRimersUseCase())
+//        return RimersViewModel(timerUseCase: makeRimersUseCase())
+        return RimersViewModel(rimerUseCase: makeRMRimerUseCase())
     }
     
     /// Rimer Coordinator 생성
