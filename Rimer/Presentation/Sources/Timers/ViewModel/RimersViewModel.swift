@@ -26,17 +26,18 @@ public class RimersViewModel: ViewModelType {
     public struct Input {
         // RimersViewController
 //        let createRimerTrigger: Driver<Void>
-        
         // RimerGridView
         let trigger: Driver<Void>
-//        let selection: Driver<IndexPath>
+        let selection: Driver<IndexPath>
         
     }
     
     public struct Output {
         let fetching: Driver<Bool>
-        let rimers: Driver<[RimerItemViewModel]>
-        let selectedRimer: Driver<Rimer>    }
+//        let rimers: Driver<[RimerItemViewModel]>
+        let rimers: Driver<[Rimer]>
+        let selectedRimer: Driver<Rimer>
+    }
     
     private var rimersUseCase: RimerRepoInterface
     private let bag = DisposeBag()
@@ -57,18 +58,23 @@ public class RimersViewModel: ViewModelType {
     
     
     public func transform(input: Input) -> Output {
-        
+        let isFetching = BehaviorRelay(value: false)
         let rimers = input.trigger.flatMapLatest { act in
             return self.rimersUseCase.fetch()
-                //.trackActivity
-                //.trackError
                 .asDriver(onErrorJustReturn: [])
-                .map { $0.map { RimerItemViewModel(with: $0) } }
         }
         
-        return Output(fetching: .just(false),
+        let fetching = isFetching.asDriver().distinctUntilChanged().asDriver()
+        
+        let selectedRimer = input.selection
+            .withLatestFrom(rimers) { (indexPath, items) -> Rimer in
+                return items[indexPath.row]
+            }
+            .asDriver() // open UpdateRimerView.swift
+        
+        return Output(fetching: fetching,
                       rimers: rimers,
-                      selectedRimer: .just(Rimer()))
+                      selectedRimer: selectedRimer)
     }
     
 }

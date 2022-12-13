@@ -266,7 +266,8 @@ class UpdateRimerView: ProgrammaticallyView {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         nameField.endEditing(true)
     }
-
+    
+    
 }
 
 
