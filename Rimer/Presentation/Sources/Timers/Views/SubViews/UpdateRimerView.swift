@@ -11,6 +11,7 @@ import RxCocoa
 import SnapKit
 import Then
 import Util
+import Domain
 
 class UpdateRimerView: ProgrammaticallyView {
     
@@ -199,7 +200,7 @@ class UpdateRimerView: ProgrammaticallyView {
         timerPickView.onTotalTimeListener = { timeSeconds in
             print("시간초 : \(timeSeconds)")
             self.tempTime = Double(timeSeconds)
-            self.viewModel.validateTimer.accept(timeSeconds != 0)
+//            self.viewModel.validateTimer.accept(timeSeconds != 0)
             valiTimer.accept(timeSeconds != 0)
         }
         
@@ -236,16 +237,16 @@ class UpdateRimerView: ProgrammaticallyView {
         completeBtn.rx.tap
             .withUnretained(self)
             .bind { (owner, tap) in
-                owner.viewModel.didTapSave(
-                    rimer: Rimer(name: owner.nameField.text ?? "",
-                                 totalTime: owner.tempTime,
-                                 thumbnail_desc: "clock")
-                ) {
-                    if let listener = owner.removeViewListener {
-                        listener()
-                    }
-                    owner.removeFromSuperview()
-                }
+//                owner.viewModel.didTapSave(
+//                    rimer: Rimer(name: owner.nameField.text ?? "",
+//                                 totalTime: owner.tempTime,
+//                                 thumbnail_desc: "clock")
+//                ) {
+//                    if let listener = owner.removeViewListener {
+//                        listener()
+//                    }
+//                    owner.removeFromSuperview()
+//                }
             }
             .disposed(by: disposeBag)
         
@@ -269,18 +270,18 @@ class UpdateRimerView: ProgrammaticallyView {
 }
 
 
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-import Domain
-
-struct UpdateRimerViewPreview: PreviewProvider {
-    static var previews: some View {
-        UIViewPreview {
-            let view = UpdateRimerView(frame: .zero)
-            return view
-        }
-        .previewLayout(.device)
-        .previewDevice("iPhone 14")
-    }
-}
-#endif
+//#if canImport(SwiftUI) && DEBUG
+//import SwiftUI
+//import Domain
+//
+//struct UpdateRimerViewPreview: PreviewProvider {
+//    static var previews: some View {
+//        UIViewPreview {
+//            let view = UpdateRimerView(frame: .zero)
+//            return view
+//        }
+//        .previewLayout(.device)
+//        .previewDevice("iPhone 14")
+//    }
+//}
+//#endif

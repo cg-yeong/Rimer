@@ -20,9 +20,7 @@ let dependencies = Dependencies(
         .toast,
         .snapKit,
         .then,
-        .alamofire,
-        .rxRealm,
-        .realmSwift
+        .alamofire
     ],
     platforms: [.iOS]
 )

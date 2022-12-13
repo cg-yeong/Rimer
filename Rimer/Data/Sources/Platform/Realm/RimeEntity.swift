@@ -6,10 +6,8 @@
 //
 
 import Foundation
-import Realm
-import RealmSwift
-
 import Domain
+import RealmSwift
 
 //class Rime: Object {
 //    @Persisted(primaryKey: true) var _id: ObjectId
@@ -17,7 +15,6 @@ import Domain
 //    @Persisted var name: String = ""
 //    @Persisted var totalTime: Double = 0.0
 //    @Persisted var thumbnail: String = ""
-//    
 //    convenience init(name: String, time: Double, thumbnail: String) {
 //        self.init()
 //        self.name = name
@@ -29,12 +26,15 @@ import Domain
  v10.10.0 : @Persisted 선언 스타일은 이전 SDK버전의 @objc dynamic, RealmOptional 및 RealmProperty 선언 표기법을 대체
         @Persisted - @objc dynamic 혼용: @objc 무시된다.
  */
-final class RMRimer: Object {
+
+                
+class RMRimer: Object {
     /// First Version
     @Persisted(primaryKey: true) var rimeId: UUID
     @Persisted var name: String = ""
     @Persisted var totalTime: Double = 0.0
     @Persisted var thumbnail: String = ""
+    
 }
 
 extension RMRimer: DomainConvertibleType {
@@ -46,7 +46,7 @@ extension RMRimer: DomainConvertibleType {
     }
 }
 
-extension Rimer: RealmRepresentable {
+extension Domain.Rimer: RealmRepresentable {
     var uid: UUID {
         return id
     }

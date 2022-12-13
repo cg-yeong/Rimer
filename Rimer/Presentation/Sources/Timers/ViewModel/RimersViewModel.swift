@@ -25,11 +25,11 @@ public class RimersViewModel: ViewModelType {
     
     public struct Input {
         // RimersViewController
-        let createRimerTrigger: Driver<Void>
+//        let createRimerTrigger: Driver<Void>
         
         // RimerGridView
         let trigger: Driver<Void>
-        let selection: Driver<IndexPath>
+//        let selection: Driver<IndexPath>
         
     }
     
@@ -66,9 +66,9 @@ public class RimersViewModel: ViewModelType {
                 .map { $0.map { RimerItemViewModel(with: $0) } }
         }
         
-        return Output(fetching: <#T##Driver<Bool>#>,
+        return Output(fetching: .just(false),
                       rimers: rimers,
-                      selectedRimer: <#T##Driver<Rimer>#>)
+                      selectedRimer: .just(Rimer()))
     }
     
 }

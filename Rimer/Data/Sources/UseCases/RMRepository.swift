@@ -9,7 +9,6 @@ import Foundation
 import RxSwift
 import Realm
 import RealmSwift
-import RxRealm
 
 import Domain
 
@@ -30,21 +29,22 @@ public class RMRepository: AbstractRepsitory {
         return try! Realm(configuration: self.configuration)
     }
     
-    public init(configuration: Realm.Configuration = Realm.Configuration()) {
+    public init(configuration: Realm.Configuration = Realm.Configuration.init()) {
         self.configuration = configuration
         let name = "com.Rimer.Realm.Repository"
 //        self.scheduler = RunLoopThreadScheduler(threadName: name)
         print("File 📁 url: \(RLMRealmPathForFile("default.realm"))")
     }
     func queryAll() -> RxSwift.Observable<[T]> {
-        return Observable.deferred {
-            let realm = self.realm
-            let objects = realm.objects(T.RealmType.self)
+//        return Observable.deferred {
+//            let realm = self.realm
+//            let objects = realm.objects(T.RealmType.self)
             
-            return Observable.array(from: objects)
-                .mapToDomain()
-        }
-        .subscribe(on: MainScheduler())
+//            return Observable.array(from: objects)
+//                .mapToDomain()
+//        }
+//        .subscribe(on: MainScheduler())
+        return .just([])
     }
     
     func query(with predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]) -> RxSwift.Observable<[T]> {
