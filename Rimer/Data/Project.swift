@@ -11,8 +11,13 @@ import ProjectDescriptionHelpers
 let project = Project.framework(
     name: Module.data.name,
     dependencies: [
-        Module.util.project,
+//        Module.util.project,
         Module.domain.project,
-        .moya
+        .moya,
+        .rxRealm,
+        .realm,
+        .realmSwift,
+        .rxSwift,
+        .rxCocoa
     ]
 )

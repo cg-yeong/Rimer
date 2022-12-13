@@ -15,7 +15,7 @@ final class RimersDIContainer {
     
     /// New.2 Realm
     func makeRMRimerRepo() -> RimerRepoInterface {
-        let repository = Repository()
+        let repository = RMRepository()
         return RimerRepoImplements(repository: repository)
     }
     

@@ -14,7 +14,8 @@ let project = Project.framework(
         .rxKeyboard,
         .rxGesture,
         .snapKit,
-        .then
+        .then,
+        .rxRelay
     ],
     resources: .default
 )

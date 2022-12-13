@@ -111,4 +111,5 @@ public extension TargetDependency {
     static let toast: TargetDependency          = .external(name: "Toast")
     static let realmSwift: TargetDependency     = .external(name: "RealmSwift")
     static let realm: TargetDependency          = .external(name: "Realm")
+    static let rxRealm: TargetDependency        = .external(name: "RxRealm")
 }

@@ -66,15 +66,15 @@ public class RxRimerUseCaseProvier: RimerRepoInterface {
     }
     
     public func save(rimer: Rimer) -> RxSwift.Observable<Void> {
-        <#code#>
+        rimerRxRepo.save(rimer: rimer)
     }
     
     public func delete(rimer: Rimer) -> RxSwift.Observable<Void> {
-        <#code#>
+        rimerRxRepo.delete(rimer: rimer)
     }
     
     public func update(rimer: Rimer) -> RxSwift.Observable<Rimer> {
-        <#code#>
+        rimerRxRepo.update(rimer: rimer)
     }
     
     

@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 import RxCocoa
-
+ 
 import Domain
 import Util
 import Realm
@@ -17,9 +17,9 @@ import RealmSwift
 
 public final class RimerRepoImplements: Domain.RimerRepoInterface {
     
-    private let repository: Repository
+    private let repository: RMRepository
     
-    public init(repository: Repository) {
+    public init(repository: RMRepository) {
         self.repository = repository
     }
     
@@ -28,15 +28,15 @@ public final class RimerRepoImplements: Domain.RimerRepoInterface {
     }
     
     public func save(rimer: Domain.Rimer) -> RxSwift.Observable<Void> {
-        return .just(())
+        return repository.save(entity: rimer)
     }
     
     public func delete(rimer: Domain.Rimer) -> RxSwift.Observable<Void> {
-        return .just(())
+        return repository.delete(entity: rimer)
     }
     
     public func update(rimer: Domain.Rimer) -> RxSwift.Observable<Domain.Rimer> {
-        return <#Observable<Rimer>#>
+        return .just(Rimer.init())
     }
     
     
