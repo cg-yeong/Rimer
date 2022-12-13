@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import Realm
 import RealmSwift
-
+import RxRealm
 import Domain
 
 protocol AbstractRepsitory {
@@ -23,7 +23,7 @@ protocol AbstractRepsitory {
 public class RMRepository: AbstractRepsitory {
     typealias T = Rimer // T == T.RealmType.DomainType, T.RealmType: Object
     private let configuration: Realm.Configuration
-//    private let scheduler: RunLoopThreadScheduler
+    private let scheduler: RunLoopThreadScheduler
     
     private var realm: Realm {
         return try! Realm(configuration: self.configuration)
@@ -32,31 +32,40 @@ public class RMRepository: AbstractRepsitory {
     public init(configuration: Realm.Configuration = Realm.Configuration.init()) {
         self.configuration = configuration
         let name = "com.Rimer.Realm.Repository"
-//        self.scheduler = RunLoopThreadScheduler(threadName: name)
+        self.scheduler = RunLoopThreadScheduler(threadName: name)
         print("File 📁 url: \(RLMRealmPathForFile("default.realm"))")
     }
     func queryAll() -> RxSwift.Observable<[T]> {
-//        return Observable.deferred {
-//            let realm = self.realm
-//            let objects = realm.objects(T.RealmType.self)
+        return Observable.deferred {
+            let realm = self.realm
+            let objects = realm.objects(T.RealmType.self)
             
-//            return Observable.array(from: objects)
-//                .mapToDomain()
-//        }
-//        .subscribe(on: MainScheduler())
-        return .just([])
+            return Observable.array(from: objects)
+                .mapToDomain()
+        }
+        .subscribe(on: MainScheduler())
     }
     
     func query(with predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]) -> RxSwift.Observable<[T]> {
-        return .just([])
+        return Observable.deferred {
+            let realm = self.realm
+            let objects = realm.objects(T.RealmType.self)
+            
+            return Observable.array(from: objects)
+                .mapToDomain()
+        }
     }
     
     func save(entity: T) -> RxSwift.Observable<Void> {
-        return .just(())
+        return Observable.deferred {
+            return self.realm.rx.save(entity: entity)
+        }.subscribe(on: scheduler)
     }
     
     func delete(entity: T) -> RxSwift.Observable<Void> {
-        return .just(())
+        return Observable.deferred {
+            return self.realm.rx.delete(entity: entity)
+        }.subscribe(on: scheduler)
     }
     
     
