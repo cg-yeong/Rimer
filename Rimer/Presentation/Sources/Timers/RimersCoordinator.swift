@@ -33,6 +33,10 @@ public class RimersCoordinator: Coordinator {
         self.nav.pushViewController(rimerVC, animated: false)
     }
     
+    public func crudStart() {
+        
+    }
+    
     deinit {
         print(#file)
     }

@@ -24,15 +24,15 @@ final class RimersDIContainer {
         return RxRimerUseCaseProvier(repo: makeRMRimerRepo())
     }
     
-    /// Old.1
-    func makeRimerRepository() -> RimersRepositoryProtocol {
-        return TimersRepsitory(storageName: "storage.rimer")
-    }
-    
-    /// Old.1
-    func makeRimersUseCase() -> RimerUseCase {
-        return RimerUseCaseProvider(rimerRepo: makeRimerRepository())
-    }
+//    /// Old.1
+//    func makeRimerRepository() -> RimersRepositoryProtocol {
+//        return TimersRepsitory(storageName: "storage.rimer")
+//    }
+//
+//    /// Old.1
+//    func makeRimersUseCase() -> RimerUseCase {
+//        return RimerUseCaseProvider(rimerRepo: makeRimerRepository())
+//    }
     
     // TODO: UseCase 변경
     func makeRimersViewModel() -> RimersViewModel {

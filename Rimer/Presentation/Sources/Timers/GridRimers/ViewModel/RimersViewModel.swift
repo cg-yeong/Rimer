@@ -12,31 +12,35 @@ import RxCocoa
 import Util
 import Domain
 
-protocol RimersViewModelInput {
-    func viewDidLoad()
-    func didTapAddBtn()
-    func didSelectRimer(at index: Int)
+public enum RimerAction {
+    case grid
+    case crud
 }
-
-protocol RimersViewModelOutput {  }
-protocol RimerGridViewModel: RimersViewModelInput, RimersViewModelOutput {}
 
 public class RimersViewModel: ViewModelType {
     
     public struct Input {
-        // RimersViewController
-//        let createRimerTrigger: Driver<Void>
         // RimerGridView
         let trigger: Driver<Void>
         let selection: Driver<IndexPath>
         
+        // UpdateRimerView
+        let cancelTrigger: Driver<Void>
+        let saveTrigger: Driver<Void>
+        let title: Driver<String>
+        let rimes: Driver<Double>
+        
     }
     
     public struct Output {
+        // RimerGridView
         let fetching: Driver<Bool>
-//        let rimers: Driver<[RimerItemViewModel]>
         let rimers: Driver<[Rimer]>
         let selectedRimer: Driver<Rimer>
+        
+        // UpdateRimerView
+        let saveEnabled: Driver<Bool>
+        let dismiss: Driver<Void>
     }
     
     private var rimersUseCase: RimerRepoInterface
@@ -51,7 +55,7 @@ public class RimersViewModel: ViewModelType {
 //    public init(timerUseCase: RimerUseCase) {
 //        self.rimersUseCase = timerUseCase
 //    }
-    public init(rimerUseCase: RimerRepoInterface) {
+    public init(act action: RimerAction = .grid, rimerUseCase: RimerRepoInterface) {
         self.rimersUseCase = rimerUseCase
         
     }
@@ -74,8 +78,15 @@ public class RimersViewModel: ViewModelType {
         
         return Output(fetching: fetching,
                       rimers: rimers,
-                      selectedRimer: selectedRimer)
+                      selectedRimer: selectedRimer
+                      ,
+                      saveEnabled: .empty(),
+                      dismiss: .empty())
     }
+    
+}
+
+extension RimersViewModel {
     
 }
 

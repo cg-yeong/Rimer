@@ -121,6 +121,10 @@ public class RimersViewController: UIViewController {
         }
     }
     
+    
+    func aiewjaf() {
+        coordinator.dependencies
+    }
 }
 
 // MARK: Modern CollectionView
