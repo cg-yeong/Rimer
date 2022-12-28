@@ -12,23 +12,12 @@ import RxCocoa
 import Util
 import Domain
 
-public enum RimerAction {
-    case grid
-    case crud
-}
-
 public class RimersViewModel: ViewModelType {
     
     public struct Input {
         // RimerGridView
         let trigger: Driver<Void>
         let selection: Driver<IndexPath>
-        
-        // UpdateRimerView
-        let cancelTrigger: Driver<Void>
-        let saveTrigger: Driver<Void>
-        let title: Driver<String>
-        let rimes: Driver<Double>
         
     }
     
@@ -38,9 +27,6 @@ public class RimersViewModel: ViewModelType {
         let rimers: Driver<[Rimer]>
         let selectedRimer: Driver<Rimer>
         
-        // UpdateRimerView
-        let saveEnabled: Driver<Bool>
-        let dismiss: Driver<Void>
     }
     
     private var rimersUseCase: RimerRepoInterface
@@ -52,10 +38,7 @@ public class RimersViewModel: ViewModelType {
     
     
     // MARK: - Init
-//    public init(timerUseCase: RimerUseCase) {
-//        self.rimersUseCase = timerUseCase
-//    }
-    public init(act action: RimerAction = .grid, rimerUseCase: RimerRepoInterface) {
+    public init(rimerUseCase: RimerRepoInterface) {
         self.rimersUseCase = rimerUseCase
         
     }
@@ -78,10 +61,7 @@ public class RimersViewModel: ViewModelType {
         
         return Output(fetching: fetching,
                       rimers: rimers,
-                      selectedRimer: selectedRimer
-                      ,
-                      saveEnabled: .empty(),
-                      dismiss: .empty())
+                      selectedRimer: selectedRimer)
     }
     
 }

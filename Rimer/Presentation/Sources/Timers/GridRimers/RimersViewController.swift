@@ -33,15 +33,14 @@ public class RimersViewController: UIViewController {
     public static func create(with viewModel: RimersViewModel) -> RimersViewController {
         let vc = RimersViewController()
         vc.viewModel = viewModel
+        vc.rimerGridView = RimerGridView.init()
         return vc
     }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        setRimerGridView()
         commonInit()
 //        viewModel.viewDidLoad() { rimerList in
-//
 //            var snap = self.rimerGridView.dataSource.snapshot()
 //            snap.deleteItems(self.rimerGridView.rimerList)
 //            self.rimerGridView.rimerList = rimerList
@@ -52,7 +51,6 @@ public class RimersViewController: UIViewController {
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
     }
     
     private func commonInit() {
@@ -64,6 +62,7 @@ public class RimersViewController: UIViewController {
     func addComponent() {
 //        [addRimerButton].forEach(view.addSubview)
         view.addSubview(addRimerButton)
+        view.addSubview(rimerGridView)
     }
     
     func setConstraint() {
@@ -71,6 +70,12 @@ public class RimersViewController: UIViewController {
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.trailing.equalToSuperview().inset(16)
             make.height.equalTo(50)
+        }
+        rimerGridView.snp.makeConstraints {
+            let tabBarHeight = self.tabBarController?.tabBar.frame.size.height ?? 50
+            $0.top.equalTo(addRimerButton.snp.bottom)
+            $0.bottom.equalToSuperview().inset(tabBarHeight)
+            $0.leading.trailing.equalToSuperview()
         }
     }
     
@@ -108,54 +113,5 @@ public class RimersViewController: UIViewController {
         
     }
     
-    private func setRimerGridView() {
-        self.rimerGridView = RimerGridView()
-        rimerGridView.viewModel = viewModel
-        view.addSubview(rimerGridView)
-        
-        rimerGridView.snp.makeConstraints {
-            let tabBarHeight = self.tabBarController?.tabBar.frame.size.height ?? 50
-            $0.top.equalTo(addRimerButton.snp.bottom)
-            $0.bottom.equalToSuperview().inset(tabBarHeight)
-            $0.leading.trailing.equalToSuperview()
-        }
-    }
     
-    
-    func aiewjaf() {
-        coordinator.dependencies
-    }
 }
-
-// MARK: Modern CollectionView
-//extension RimersViewController {
-//
-//    func setUpLayout() {
-//        rimersCollectionView.collectionViewLayout = gridFlowLayout.createGridLayout()
-//    }
-//
-//    func setUpDataSource() {
-//        self.dataSource = UICollectionViewDiffableDataSource(collectionView: self.rimersCollectionView) { collectionView, indexPath, rimer -> UICollectionViewCell? in
-//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RimerCell.id, for: indexPath) as? RimerCell else { preconditionFailure() }
-//            var rimerJSON = JSON()
-//            rimerJSON["id"] = JSON(rimer.id.uuidString)
-//            rimerJSON["name"] = JSON(rimer.name)
-//            rimerJSON["totalTime"] = JSON(rimer.totalTime)
-//            rimerJSON["thumbnail_desc"] = JSON(rimer.thumbnail_desc)
-//
-//            cell.configure(data: rimerJSON)
-//            return cell
-//        }
-//        dataSource.supplementaryViewProvider = { collectionView, kind, indexPath -> UICollectionReusableView? in }
-//    }
-//
-//    func updateDiffableSnapShot() {
-//        var snapshot = NSDiffableDataSourceSnapshot<Section, Rimer>()
-//        snapshot.appendSections([.main])
-//        snapshot.appendItems(rimerList)
-//        self.dataSource.apply(snapshot, animatingDifferences: true)
-//
-//    }
-//
-//}
-

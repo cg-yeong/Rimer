@@ -40,6 +40,10 @@ final class RimersDIContainer {
         return RimersViewModel(rimerUseCase: makeRMRimerUseCase())
     }
     
+    func makeCreateRimerViewModel() -> CreateRimerViewModel {
+        return CreateRimerViewModel(rimerUseCase: makeRMRimerUseCase())
+    }
+    
     /// Rimer Coordinator 생성
     func makeRimersCoordinator(navigationController: UINavigationController) -> Presentation.RimersCoordinator {
         let timersCoordinator = RimersCoordinator(nav: navigationController, dependencies: self)
@@ -49,6 +53,10 @@ final class RimersDIContainer {
 }
 
 extension RimersDIContainer: RimersCoordinatorDependencies {
+    func createRimerVC() -> Presentation.CRUDRimerVC {
+        return CRUDRimerVC.create(with: makeCreateRimerViewModel())
+    }
+    
     func makeRimersViewController() -> Presentation.RimersViewController {
         return RimersViewController.create(with: makeRimersViewModel())
     }

@@ -11,6 +11,7 @@ import UIKit
 
 public protocol RimersCoordinatorDependencies {
     func makeRimersViewController() -> RimersViewController
+    func createRimerVC() -> CRUDRimerVC
 }
 
 
