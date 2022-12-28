@@ -23,8 +23,6 @@ public class RimersViewController: UIViewController {
     let addRimerButton = UIButton().then { btn in
         btn.setImage(UIImage(systemName: "plus.circle"), for: .normal)
     }
-    /// rimerGridView
-    var updateRimerView: UpdateRimerView?
     
     let dBag = DisposeBag()
     private var viewModel: RimersViewModel!
@@ -60,7 +58,6 @@ public class RimersViewController: UIViewController {
     }
     
     func addComponent() {
-//        [addRimerButton].forEach(view.addSubview)
         view.addSubview(addRimerButton)
         view.addSubview(rimerGridView)
     }
@@ -81,33 +78,12 @@ public class RimersViewController: UIViewController {
     
     func bind() { // bindViewModel()
         
-        
         addRimerButton.rx.tap
             .filter { _ in !self.rimerGridView.gridView.isDragging }
             .bind { [weak self] _ in
                 print("\(#file.fileName) :: \(#function) - addRimerBtn Click")
                 guard let self = self else { return }
-                let view = UpdateRimerView(frame: self.view.frame)
-                view.viewModel = self.viewModel
-                view.removeViewListener = {
-                    self.updateRimerView = nil
-                    /*
-                    self.viewModel.viewDidLoad() { asd in
-                        var snap = self.rimerGridView.dataSource.snapshot()
-                        snap.deleteItems(self.rimerGridView.rimerList)
-                        self.rimerGridView.rimerList = asd
-                        snap.appendItems(self.rimerGridView.rimerList)
-                        self.rimerGridView.dataSource.apply(snap)
-                    }*/
-                }
-                self.view.addSubview(view)
-                self.updateRimerView = view
-                self.updateRimerView!.snp.makeConstraints { make in
-                    let tabBarHeight = self.tabBarController?.tabBar.frame.size.height ?? 50
-                    make.bottom.equalToSuperview().inset(tabBarHeight)
-                    make.leading.trailing.equalToSuperview()
-                    make.top.equalToSuperview().inset(self.view.safeAreaInsets)
-                }
+                self.coordinator?.crudStart()
             }
             .disposed(by: dBag)
         

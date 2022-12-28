@@ -15,13 +15,15 @@ import Util
 
 public class CRUDRimerVC: ProgrammaticallyViewController, UITextFieldDelegate {
     
+    var coordinator: RimersCoordinator?
+    
     let backgroundView = UIView().then {
-        $0.backgroundColor = .black.withAlphaComponent(0.5)
+        $0.backgroundColor = .clear
     }
     
     let contentView = UIView().then {
         $0.snp.setLabel("contentView")
-        $0.backgroundColor = .white
+        $0.backgroundColor = UIColor(red: 129, green: 129, blue: 129, alpha: 1)
         $0.layer.cornerRadius = 16
         $0.clipsToBounds = true
     }
@@ -247,15 +249,16 @@ public class CRUDRimerVC: ProgrammaticallyViewController, UITextFieldDelegate {
 //            }
 //            .disposed(by: disposeBag)
 //        
-//        cancelBtn.rx.tap
-//            .withUnretained(self)
-//            .bind { (owner, event) in
+        cancelBtn.rx.tap
+            .withUnretained(self)
+            .bind { (owner, event) in
 //                if let listener = owner.removeViewListener {
 //                    listener()
 //                }
 //                owner.removeFromSuperview()
-//            }
-//            .disposed(by: disposeBag)
+                self.coordinator?.popVC()
+            }
+            .disposed(by: disposeBag)
     }
     
     
@@ -263,4 +266,11 @@ public class CRUDRimerVC: ProgrammaticallyViewController, UITextFieldDelegate {
         nameField.endEditing(true)
     }
     
+}
+
+extension CRUDRimerVC: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 }

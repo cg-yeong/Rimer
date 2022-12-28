@@ -30,12 +30,18 @@ public class RimersCoordinator: Coordinator {
     public func start() {
         let rimerVC = dependencies.makeRimersViewController()
         rimerVC.coordinator = self
-//        timerVC.navigationItem.title = "라이머"
         self.nav.pushViewController(rimerVC, animated: false)
     }
     
     public func crudStart() {
-        
+        let createVC = dependencies.createRimerVC()
+        createVC.coordinator = self
+        createVC.modalPresentationStyle = .overFullScreen
+        self.nav.present(createVC, animated: true)
+    }
+    
+    public func popVC() {
+        self.nav.dismiss(animated: true)
     }
     
     deinit {

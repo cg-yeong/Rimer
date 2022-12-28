@@ -23,7 +23,7 @@ class RimerGridView: ProgrammaticallyView {
     }
     
     lazy var gridView = UICollectionView(frame: .zero, collectionViewLayout: GridCollecitonViewFlowLayout()).then { grid in
-        grid.backgroundColor = .white
+        grid.backgroundColor = .cyan
         grid.isScrollEnabled = true
         grid.clipsToBounds = true
         grid.register(RimerCell.self, forCellWithReuseIdentifier: RimerCell.id)
