@@ -35,9 +35,9 @@ final class RimersDIContainer {
 //    }
     
     // TODO: UseCase 변경
-    func makeRimersViewModel() -> RimersViewModel {
+    func makeRimersViewModel(actions: RimersViewModelActions) -> RimersViewModel {
 //        return RimersViewModel(timerUseCase: makeRimersUseCase())
-        return RimersViewModel(rimerUseCase: makeRMRimerUseCase())
+        return RimersViewModel(rimerUseCase: makeRMRimerUseCase(), actions: actions)
     }
     
     func makeCreateRimerViewModel() -> CreateRimerViewModel {
@@ -57,8 +57,8 @@ extension RimersDIContainer: RimersCoordinatorDependencies {
         return CRUDRimerVC.create(with: makeCreateRimerViewModel())
     }
     
-    func makeRimersViewController() -> Presentation.RimersViewController {
-        return RimersViewController.create(with: makeRimersViewModel())
+    func makeRimersViewController(actions: RimersViewModelActions) -> Presentation.RimersViewController {
+        return RimersViewController.create(with: makeRimersViewModel(actions: actions))
     }
     
     

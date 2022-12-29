@@ -80,7 +80,7 @@ open class RimerPickerView: UIView {
     private lazy var colonLabel = UILabel().then {
         let size = Constants.colonFontSize
         $0.font = .systemFont(ofSize: size, weight: .bold)
-        $0.textColor = tintColor
+        $0.textColor = .white
         $0.text = ":"
     }
     

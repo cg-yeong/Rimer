@@ -6,11 +6,13 @@
 //
 
 import Foundation
-import Util
 import UIKit
 
+import Util
+import Domain
+
 public protocol RimersCoordinatorDependencies {
-    func makeRimersViewController() -> RimersViewController
+    func makeRimersViewController(actions: RimersViewModelActions) -> RimersViewController
     func createRimerVC() -> CRUDRimerVC
 }
 
@@ -28,7 +30,7 @@ public class RimersCoordinator: Coordinator {
     }
     
     public func start() {
-        let rimerVC = dependencies.makeRimersViewController()
+        let rimerVC = dependencies.makeRimersViewController(actions: self) // RimersViewModelActions 채택
         rimerVC.coordinator = self
         self.nav.pushViewController(rimerVC, animated: false)
     }
@@ -47,5 +49,24 @@ public class RimersCoordinator: Coordinator {
     deinit {
         print(#file)
     }
+    
+}
+
+extension RimersCoordinator: RimersViewModelActions {
+    public func toCreateRimer() {
+        let createVC = dependencies.createRimerVC()
+        createVC.coordinator = self
+        createVC.modalPresentationStyle = .overFullScreen
+        self.nav.present(createVC, animated: true)
+    }
+    
+    public func toRimer(_ rimer: Domain.Rimer) {
+        
+    }
+    
+    public func toRimers() {
+        self.nav.dismiss(animated: true)
+    }
+    
     
 }

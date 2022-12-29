@@ -38,13 +38,6 @@ public class RimersViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         commonInit()
-//        viewModel.viewDidLoad() { rimerList in
-//            var snap = self.rimerGridView.dataSource.snapshot()
-//            snap.deleteItems(self.rimerGridView.rimerList)
-//            self.rimerGridView.rimerList = rimerList
-//            snap.appendItems(self.rimerGridView.rimerList)
-//            self.rimerGridView.dataSource.apply(snap)
-//        }
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -78,16 +71,44 @@ public class RimersViewController: UIViewController {
     
     func bind() { // bindViewModel()
         
-        addRimerButton.rx.tap
-            .filter { _ in !self.rimerGridView.gridView.isDragging }
-            .bind { [weak self] _ in
-                print("\(#file.fileName) :: \(#function) - addRimerBtn Click")
-                guard let self = self else { return }
-                self.coordinator?.crudStart()
-            }
+//        addRimerButton.rx.tap
+//            .filter { _ in !self.rimerGridView.gridView.isDragging }
+//            .bind { [weak self] _ in
+//                print("\(#file.fileName) :: \(#function) - addRimerBtn Click")
+//                guard let self = self else { return }
+//                self.coordinator?.crudStart()
+//            }
+//            .disposed(by: dBag)
+        let viewWillAppear = rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
+            .map { _ in }
+            .asDriver(onErrorRecover: { error in .empty() })
+        
+        
+        let input = RimersViewModel.Input(trigger: viewWillAppear,
+                                          createTrigger: addRimerButton.rx.tap.asDriver(),
+                                          selection: rimerGridView.gridView.rx.itemSelected.asDriver())
+        
+        
+        let output = viewModel.transform(input: input)
+        output.rimers.drive { [weak self] rimers in
+            guard let self = self else { return }
+            var snap = self.rimerGridView.dataSource.snapshot()
+            snap.deleteItems(self.rimerGridView.rimerList)
+            self.rimerGridView.rimerList = rimers
+            snap.appendItems(rimers)
+            self.rimerGridView.dataSource.apply(snap)
+        }.disposed(by: dBag)
+        
+//        output.fetching
+        
+        output.createRimer
+            .drive() // viewModel's action : Coordinator -> open CreateRimerVC
+            .disposed(by: dBag)
+        
+        output.selectedRimer
+            .drive()
             .disposed(by: dBag)
         
     }
-    
     
 }

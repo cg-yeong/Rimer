@@ -194,6 +194,7 @@ public class CRUDRimerVC: ProgrammaticallyViewController, UITextFieldDelegate {
     }
     
     override public func bind() {
+        
 //        var valiTimer = BehaviorRelay(value: false)
 //        
 //        timerPickView.onTotalTimeListener = { timeSeconds in
@@ -268,8 +269,8 @@ public class CRUDRimerVC: ProgrammaticallyViewController, UITextFieldDelegate {
     
 }
 
-extension CRUDRimerVC: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+extension CRUDRimerVC {
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
