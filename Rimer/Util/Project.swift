@@ -11,8 +11,6 @@ let project = Project.framework(
         .toast,
         .rxSwift,
         .rxCocoa,
-        .rxKeyboard,
-        .rxGesture,
         .snapKit,
         .then,
         .rxRelay
