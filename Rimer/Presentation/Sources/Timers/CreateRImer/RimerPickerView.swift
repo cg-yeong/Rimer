@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import Then
+import RxSwift
 
 open class RimerPickerView: UIView {
     private enum Constants {
@@ -53,6 +54,7 @@ open class RimerPickerView: UIView {
     
     public var onNumberTimePicked: ((_ hour: Int, _ minute: Int, _ second: Int) -> Void)?
     public var onTotalTimeListener: ((_ totalTime: Int) -> Void)?
+    public var onTotalTimeReturner: ((_ totalTime: Int) -> Observable<Int>)?
     
     // MARK: - Private properties
     public var timeFormat: TimeFormat
@@ -203,5 +205,6 @@ extension RimerPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
         
         let totalTime = second + (minute * 60) + (hour * 3600)
         onTotalTimeListener?(totalTime)
+        onTotalTimeReturner?(totalTime)
     }
 }

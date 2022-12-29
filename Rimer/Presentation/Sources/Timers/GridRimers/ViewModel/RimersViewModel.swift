@@ -15,7 +15,7 @@ import Domain
 public protocol RimersViewModelActions {
     func toCreateRimer()
     func toRimer(_ rimer: Rimer)
-    func toRimers()
+//    func toRimers()
 }
 
 public class RimersViewModel: ViewModelType {

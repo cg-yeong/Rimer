@@ -91,7 +91,8 @@ public class CRUDRimerVC: ProgrammaticallyViewController, UITextFieldDelegate {
     }
     
     let completeBtn = UIButton().then {
-        $0.setTitle("완료", for: .normal)
+        $0.setTitle("저장", for: .normal)
+        $0.setTitle("완료", for: .disabled)
         $0.titleLabel?.font = .boldSystemFont(ofSize: 16)
         $0.backgroundColor = .systemYellow
         $0.layer.cornerRadius = 16
@@ -108,6 +109,9 @@ public class CRUDRimerVC: ProgrammaticallyViewController, UITextFieldDelegate {
     }
     
     private var viewModel: CreateRimerViewModel!
+    
+    private let ots = BehaviorRelay<Double>(value: 0.0)
+    
     var tempTime: Double = 0.0
     
     public static func create(with viewModel: CreateRimerViewModel) -> CRUDRimerVC {
@@ -195,71 +199,26 @@ public class CRUDRimerVC: ProgrammaticallyViewController, UITextFieldDelegate {
     
     override public func bind() {
         
-//        var valiTimer = BehaviorRelay(value: false)
-//        
-//        timerPickView.onTotalTimeListener = { timeSeconds in
-//            print("시간초 : \(timeSeconds)")
-//            self.tempTime = Double(timeSeconds)
-////            self.viewModel.validateTimer.accept(timeSeconds != 0)
-//            valiTimer.accept(timeSeconds != 0)
-//        }
-//        
-//        var validName = nameField.rx.text
-//            .orEmpty
-//            .distinctUntilChanged()
-//            .map { $0.trimmingCharacters(in: .whitespaces) }
-//            .map { !$0.isEmpty }
-//            
-//        lazy var enableCompleteBtn = Binder<Bool>(completeBtn) { btn, bool in
-//            btn.backgroundColor = bool ? .systemOrange : .darkGray
-//            btn.isEnabled = bool
-//        }
-//        
-//        Observable.combineLatest(validName, valiTimer) { $0 && $1 }
-//            .bind(to: enableCompleteBtn)
-//            .disposed(by: disposeBag)
-//        
-//        
-//        let close = UITapGestureRecognizer()
-//        backgroundView.addGestureRecognizer(close)
-//        
-//        close.rx.event
-//            .withUnretained(self)
-//            .bind { (owner, event) in
-//                if let listener = owner.removeViewListener {
-//                    listener()
-//                }
-//                owner.removeFromSuperview()
-//            }
-//            .disposed(by: disposeBag)
-//        
-//        
-//        completeBtn.rx.tap
-//            .withUnretained(self)
-//            .bind { (owner, tap) in
-////                owner.viewModel.didTapSave(
-////                    rimer: Rimer(name: owner.nameField.text ?? "",
-////                                 totalTime: owner.tempTime,
-////                                 thumbnail_desc: "clock")
-////                ) {
-////                    if let listener = owner.removeViewListener {
-////                        listener()
-////                    }
-////                    owner.removeFromSuperview()
-////                }
-//            }
-//            .disposed(by: disposeBag)
-//        
-        cancelBtn.rx.tap
-            .withUnretained(self)
-            .bind { (owner, event) in
-//                if let listener = owner.removeViewListener {
-//                    listener()
-//                }
-//                owner.removeFromSuperview()
-                self.coordinator?.popVC()
-            }
+        timerPickView.onTotalTimeListener = { [weak self] timeSeconds in
+            print("시간초 : \(timeSeconds)")
+            self?.tempTime = Double(timeSeconds)
+            self?.ots.accept(Double(timeSeconds))
+        }
+        
+        let input = CreateRimerViewModel.Input(cancelTrigger: cancelBtn.rx.tap.asDriver(),
+                                               title: nameField.rx.text.orEmpty.asDriver(),
+                                               rimes: ots.asDriver(),
+                                               saveTrigger: completeBtn.rx.tap.asDriver())
+        let output = viewModel.transform(input: input)
+        
+        output.dismiss
+            .drive()
             .disposed(by: disposeBag)
+        
+        output.saveEnabled
+            .drive(completeBtn.rx.isEnabled)
+            .disposed(by: disposeBag)
+        
     }
     
     
