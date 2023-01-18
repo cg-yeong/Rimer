@@ -16,7 +16,7 @@ import RxCocoa
 import Util
 import Domain
 
-class RimerGridView: ProgrammaticallyView {
+class RimerGridView: ProgrammaticallyView, UICollectionViewDelegate {
     
     enum Section: CaseIterable {
         case main
@@ -26,10 +26,11 @@ class RimerGridView: ProgrammaticallyView {
         grid.backgroundColor = .systemYellow.withAlphaComponent(0.2)
         grid.isScrollEnabled = true
         grid.clipsToBounds = true
-        grid.register(RimerCell.self, forCellWithReuseIdentifier: RimerCell.id)
         grid.isDirectionalLockEnabled = true
+        grid.delegate = self
         grid.collectionViewLayout = GridCollecitonViewFlowLayout().createGridLayout()
     }
+    var rimerCellRegistration: UICollectionView.CellRegistration<RimerCell, Rimer>!
     var dataSource: UICollectionViewDiffableDataSource<Section, Rimer>!
     
     var rimerList: [Rimer] = []
@@ -48,6 +49,7 @@ class RimerGridView: ProgrammaticallyView {
     }
     
     override func bind() {
+        setupCellRegistration()
         setupDataSource()
         updateDiffableSnapShot()
     }
@@ -56,22 +58,17 @@ class RimerGridView: ProgrammaticallyView {
         gridView.collectionViewLayout = GridCollecitonViewFlowLayout().createGridLayout()
     }
     
-    func setupDataSource() {
-        self.dataSource = UICollectionViewDiffableDataSource(collectionView: self.gridView) { collectionview, indexPath, rimer -> UICollectionViewCell? in
-            //collectionview.dequeueConfiguredReusableCell(using: <#T##UICollectionView.CellRegistration<Cell, Item>#>, for: <#T##IndexPath#>, item: <#T##Item?#>)
-            guard let cell = collectionview.dequeueReusableCell(withReuseIdentifier: RimerCell.id, for: indexPath) as? RimerCell else {
-                preconditionFailure()
-            }
-            /*
-            var rimerJSON = JSON()
-            rimerJSON["id"] = JSON(rimer.id.uuidString)
-            rimerJSON["name"] = JSON(rimer.name)
-            rimerJSON["totalTIme"] = JSON(rimer.totalTime)
-            rimerJSON["thumbnail_desc"] = JSON(rimer.thumbnail_desc)
-            
-            cell.configure(data: rimerJSON)
-             */
+    func setupCellRegistration() {
+        rimerCellRegistration = .init(handler: { cell, indexPath, rimer in
             cell.configData(with: rimer)
+            
+        })
+    }
+    
+    func setupDataSource() {
+        self.dataSource = UICollectionViewDiffableDataSource(collectionView: self.gridView) { [weak self] collectionview, indexPath, rimer -> UICollectionViewCell? in
+            guard let self = self else { return nil }
+            let cell = collectionview.dequeueConfiguredReusableCell(using: self.rimerCellRegistration, for: indexPath, item: rimer)
             return cell
             
         }

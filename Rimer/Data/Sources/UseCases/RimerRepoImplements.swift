@@ -41,23 +41,3 @@ public final class RimerRepoImplements: Domain.RimerRepoInterface {
     
     
 }
-
-extension Reactive where Base == UserDefaults {
-    func save<T: Codable>(obj: T) -> RxSwift.Observable<Void> {
-        return Observable.create { observer in
-            do {
-//                self.base.set(<#T##value: Any?##Any?#>, forKey: "Rimers")
-                var list: [T]?
-                if let data = self.base.value(forKey: "Rimers") as? Data {
-                    list = try PropertyListDecoder().decode([T].self, from: data)
-                }
-                self.base.set(try PropertyListEncoder().encode(obj), forKey: "Rimers")
-                observer.onNext(())
-                observer.onCompleted()
-            } catch {
-                observer.onError(error)
-            }
-            return Disposables.create()
-        }
-    }
-}

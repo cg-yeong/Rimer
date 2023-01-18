@@ -46,16 +46,12 @@ public class CreateRimerViewModel: ViewModelType {
             .map { (title, time) in
                 return Rimer(name: title, totalTime: time, thumbnail_desc: "")
             }
-            .flatMapLatest { [weak self] ele in
-                guard let self = self else { return }
-                return self.rimersUseCase.save(rimer: ele)
-                    .asDriver { error in
-                        return Driver.empty()
-                    }
+            .flatMapLatest { [weak self] rimer in
+                return self?.rimersUseCase.save(rimer: rimer)
+                    .asDriver(onErrorRecover: { _ in .empty() }) ?? .empty()
             }
-        
             
-        let dismiss = Driver.merge(input.cancelTrigger)
+        let dismiss = Driver.merge(save, input.cancelTrigger)
             .do(onNext: action.toRimers)
         return Output(saveEnabled: canSave, dismiss: dismiss)
     }

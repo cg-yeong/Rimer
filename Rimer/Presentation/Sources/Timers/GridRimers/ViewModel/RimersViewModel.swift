@@ -15,7 +15,7 @@ import Domain
 public protocol RimersViewModelActions {
     func toCreateRimer()
     func toRimer(_ rimer: Rimer)
-//    func toRimers()
+    //    func toRimers()
 }
 
 public class RimersViewModel: ViewModelType {
@@ -25,7 +25,7 @@ public class RimersViewModel: ViewModelType {
         let trigger: Driver<Void>
         let createTrigger: Driver<Void>
         let selection: Driver<IndexPath>
-        
+        let deleteTrigger: Driver<Void>
     }
     
     public struct Output {
@@ -34,6 +34,7 @@ public class RimersViewModel: ViewModelType {
         let rimers: Driver<[Rimer]>
         let createRimer: Driver<Void>
         let selectedRimer: Driver<Rimer>
+        let deletedRimer: Driver<Void>
         // let error: Driver<Error>
     }
     
@@ -68,16 +69,38 @@ public class RimersViewModel: ViewModelType {
             .withLatestFrom(rimers) { (indexPath, items) -> Rimer in
                 return items[indexPath.row]
             }
-            .do(onNext: actions.toRimer)
-//            .asDriver() // open UpdateRimerView.swift
+            .do { [weak self] rimer in
+                print("## Selected Rimer : \(rimer.name) ##")
+                self?.actions.toRimer(rimer)
+            }
+            .asDriver()
         
         let createRimer = input.createTrigger
             .do(onNext: actions.toCreateRimer)
+            .asDriver()
+        
+        let deletedRimer = input.deleteTrigger
+            .withLatestFrom(selectedRimer) { $1 }
+            .distinctUntilChanged()
+            .flatMapLatest { [weak self] rimer in
+                return self?.rimersUseCase.delete(rimer: rimer)
+                    .asDriver(onErrorRecover: { _ in .empty() }) ?? .empty()
+            }
+            .asDriver(onErrorRecover: { _ in .empty() })
+//        
+//        let canRemove = input.deleteTrigger
+//            .withLatestFrom(rimers) { $1 }
+//            .do { rimers in
+//                rimers
+//            }
+//            
+        
         
         return Output(fetching: fetching,
                       rimers: rimers,
                       createRimer: createRimer,
-                      selectedRimer: selectedRimer)
+                      selectedRimer: selectedRimer,
+                      deletedRimer: deletedRimer)
     }
     
 }

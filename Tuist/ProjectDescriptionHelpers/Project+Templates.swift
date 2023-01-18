@@ -8,7 +8,7 @@ import ProjectDescription
 extension Project {
     
     static let bundleID = "com.yeong"
-    static let iosVersion = "13.0"
+    static let iosVersion = "14.0"
     
     public static func app(
         name: String,

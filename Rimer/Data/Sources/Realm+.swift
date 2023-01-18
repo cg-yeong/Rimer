@@ -36,7 +36,7 @@ extension Reactive where Base == Realm {
     func delete<R: RealmRepresentable>(entity: R) -> Observable<Void> where R.RealmType: Object {
         return Observable.create { observer in
             do {
-                guard let object = self.base.object(ofType: R.RealmType.self, forPrimaryKey: entity.uid) else { fatalError() }
+                guard let object = self.base.object(ofType: R.RealmType.self, forPrimaryKey: entity.uid) else { fatalError(entity.uid.uuidString) }
 
                 try self.base.write {
                     self.base.delete(object)

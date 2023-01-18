@@ -19,7 +19,11 @@ public class RimersViewController: UIViewController {
     var coordinator: RimersCoordinator?
     
     var rimerGridView: RimerGridView!
-    var addRimerBtn: UIBarButtonItem?
+    
+    let delRimerButton = UIButton().then { btn in
+        btn.setImage(UIImage(systemName: "minus.circle"), for: .normal)
+    }
+    
     let addRimerButton = UIButton().then { btn in
         btn.setImage(UIImage(systemName: "plus.circle"), for: .normal)
     }
@@ -51,7 +55,8 @@ public class RimersViewController: UIViewController {
     }
     
     func addComponent() {
-        view.addSubview(addRimerButton)
+        [addRimerButton, delRimerButton].forEach { view.addSubview($0) }
+//        view.addSubview(addRimerButton)
         view.addSubview(rimerGridView)
     }
     
@@ -61,6 +66,13 @@ public class RimersViewController: UIViewController {
             make.trailing.equalToSuperview().inset(16)
             make.height.equalTo(50)
         }
+        
+        delRimerButton.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.trailing.equalTo(addRimerButton.snp.leading).offset(-16)
+            make.height.equalTo(50)
+        }
+        
         rimerGridView.snp.makeConstraints {
             let tabBarHeight = self.tabBarController?.tabBar.frame.size.height ?? 50
             $0.top.equalTo(addRimerButton.snp.bottom)
@@ -71,14 +83,6 @@ public class RimersViewController: UIViewController {
     
     func bind() { // bindViewModel()
         
-//        addRimerButton.rx.tap
-//            .filter { _ in !self.rimerGridView.gridView.isDragging }
-//            .bind { [weak self] _ in
-//                print("\(#file.fileName) :: \(#function) - addRimerBtn Click")
-//                guard let self = self else { return }
-//                self.coordinator?.crudStart()
-//            }
-//            .disposed(by: dBag)
         let viewWillAppear = rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
             .map { _ in }
             .asDriver(onErrorRecover: { error in .empty() })
@@ -86,10 +90,12 @@ public class RimersViewController: UIViewController {
         
         let input = RimersViewModel.Input(trigger: viewWillAppear,
                                           createTrigger: addRimerButton.rx.tap.asDriver(),
-                                          selection: rimerGridView.gridView.rx.itemSelected.asDriver())
+                                          selection: rimerGridView.gridView.rx.itemSelected.asDriver(),
+                                          deleteTrigger: delRimerButton.rx.tap.asDriver())
         
         
         let output = viewModel.transform(input: input)
+        
         output.rimers.drive { [weak self] rimers in
             guard let self = self else { return }
             var snap = self.rimerGridView.dataSource.snapshot()
@@ -106,9 +112,19 @@ public class RimersViewController: UIViewController {
             .disposed(by: dBag)
         
         output.selectedRimer
-            .drive()
+            .drive { [weak self] rimer in
+                guard let self = self else { return }
+                var snap = self.rimerGridView.dataSource.snapshot()
+            }
             .disposed(by: dBag)
         
+        output.deletedRimer
+            .drive { [weak self] rimers in
+                guard let self = self else { return }
+                var snap = self.rimerGridView.dataSource.snapshot()
+                self.rimerGridView.dataSource.apply(snap, animatingDifferences: true)
+            }
+            .disposed(by: dBag)
     }
     
 }
