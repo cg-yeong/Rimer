@@ -49,7 +49,7 @@ final class RimerCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        backgroundColor = [UIColor.green, .blue, .systemPink, .purple, .red, .orange, .yellow].randomElement()?.withAlphaComponent(0.5)
+        backgroundColor = .systemOrange.withAlphaComponent(0.5)
     }
     
     override func prepareForReuse() {
